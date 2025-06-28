@@ -1,10 +1,9 @@
-import { create } from 'zustand';
-import { api } from '~/trpc/server';
+import { create } from "zustand";
 
 export interface Message {
   id: string;
   content: string;
-  sender: 'user' | 'ai';
+  sender: "user" | "ai";
   timestamp: Date;
   emotion?: {
     tone: string;
@@ -18,7 +17,7 @@ export interface Scenario {
   title: string;
   description: string;
   category: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: "easy" | "medium" | "hard";
   persona: {
     name: string;
     personality: string;
@@ -40,18 +39,17 @@ interface ChatState {
   currentScenario: Scenario | null;
   isTyping: boolean;
   sessionId: string | null;
-  
+
   // Emotion analysis
   currentEmotion: EmotionAnalysis | null;
   emotionHistory: EmotionAnalysis[];
-  
+
   // UI state
   sidebarOpen: boolean;
   showEmotionPanel: boolean;
-  
+
   // Actions
-  analyzeAndSetCurrentEmotion: (text: string) => Promise<void>;
-  addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => void;
+  addMessage: (message: Omit<Message, "id" | "timestamp">) => void;
   setCurrentScenario: (scenario: Scenario) => void;
   setIsTyping: (typing: boolean) => void;
   setCurrentEmotion: (emotion: EmotionAnalysis) => void;
@@ -71,25 +69,8 @@ export const useChatStore = create<ChatState>((set, _get) => ({
   emotionHistory: [],
   sidebarOpen: true,
   showEmotionPanel: true,
-  
-  // Actions
-  analyzeAndSetCurrentEmotion: async (text: string) => {
-    try {
-      const toneAnalysisResult = await api.gemini.toneAnalysis({
-        text: text,
-      });
-      
-      set((state) => ({
-        currentEmotion: toneAnalysisResult,
-        // Also update the history, just like your old setCurrentEmotion action did
-        emotionHistory: [...state.emotionHistory, toneAnalysisResult],
-      }));
-      
-    } catch (e) {
-      console.error("Failed tone analysis:", e);
-    }
 
-  },
+  // Actions
   addMessage: (message) => {
     const newMessage: Message = {
       id: crypto.randomUUID(),
@@ -100,30 +81,30 @@ export const useChatStore = create<ChatState>((set, _get) => ({
       messages: [...state.messages, newMessage],
     }));
   },
-  
+
   setCurrentScenario: (scenario) => {
     set({ currentScenario: scenario });
   },
-  
+
   setIsTyping: (typing) => {
     set({ isTyping: typing });
   },
-  
+
   setCurrentEmotion: (emotion) => {
     set((state) => ({
       currentEmotion: emotion,
       emotionHistory: [...state.emotionHistory, emotion],
     }));
   },
-  
+
   toggleSidebar: () => {
     set((state) => ({ sidebarOpen: !state.sidebarOpen }));
   },
-  
+
   toggleEmotionPanel: () => {
     set((state) => ({ showEmotionPanel: !state.showEmotionPanel }));
   },
-  
+
   clearChat: () => {
     set({
       messages: [],
@@ -131,7 +112,7 @@ export const useChatStore = create<ChatState>((set, _get) => ({
       emotionHistory: [],
     });
   },
-  
+
   startNewSession: () => {
     set({
       sessionId: crypto.randomUUID(),
