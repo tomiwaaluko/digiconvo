@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useRef, useEffect } from "react";
 import { Send, Mic, Square, BarChart3 } from "lucide-react";
@@ -9,6 +9,8 @@ import { TypingIndicator } from "~/app/_components/chat/TypingIndicator";
 import { WelcomeScreen } from "../welcome/WelcomeScreen";
 import { SessionControls } from "../controls/SessionControls";
 import { ThemeToggle } from "../theme/ThemeToggle";
+
+import { api } from "~/trpc/react";
 
 export function ChatInterface() {
   const [inputMessage, setInputMessage] = useState("");
@@ -23,8 +25,18 @@ export function ChatInterface() {
     setIsTyping,
     toggleEmotionPanel,
     showEmotionPanel,
-    analyzeAndSetCurrentEmotion,
+    setCurrentEmotion,
   } = useChatStore();
+
+  const analyzeTone = api.gemini.toneAnalysis.useMutation({
+    onSuccess: (data) => {
+      setCurrentEmotion(data);
+    },
+    onError: (error) => {
+      console.error("Failed tone analysis:", error);
+      // You could have a `setErrorMessage` action in your store here.
+    },
+  })
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,8 +72,7 @@ export function ChatInterface() {
     // 3. In the background, send the user's message for tone analysis.
     //    This will update the EmotionPanel automatically when it's done.
     //    We don't need to `await` this if we want the UI to remain responsive.
-    void analyzeAndSetCurrentEmotion(userMessageContent);
-
+    analyzeTone.mutate({text: userMessageContent })
     // 4. Set the typing indicator for the AI's conversational reply.
     setIsTyping(true);
 

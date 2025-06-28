@@ -64,7 +64,7 @@ export function LandingPage() {
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Link
-              href="/app"
+              href="/chat"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
               Get Started
@@ -92,7 +92,7 @@ export function LandingPage() {
 
           <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
-              href="/app"
+              href="/chat"
               className="group flex transform items-center justify-center gap-2 rounded-xl bg-indigo-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:bg-indigo-700 hover:shadow-xl dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
               Start Chatting
@@ -214,7 +214,7 @@ export function LandingPage() {
           </p>
 
           <Link
-            href="/app"
+            href="/chat"
             className="group inline-flex transform items-center gap-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-12 py-6 text-xl font-semibold text-white shadow-xl transition-all duration-200 hover:-translate-y-1 hover:from-indigo-700 hover:to-purple-700 hover:shadow-2xl"
           >
             Get Started Now
