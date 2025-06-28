@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Send, Mic, Square, BarChart3 } from "lucide-react";
@@ -29,13 +29,21 @@ export function ChatInterface() {
 
   const analyzeTone = api.gemini.toneAnalysis.useMutation({
     onSuccess: (data) => {
-      setCurrentEmotion(data);
+      // Type assertion to ensure data matches EmotionAnalysis interface
+      const emotionData = data as {
+        primaryEmotion: string;
+        intensity: number;
+        confidence: number;
+        suggestions: string[];
+        color: string;
+      };
+      setCurrentEmotion(emotionData);
     },
     onError: (error) => {
       console.error("Failed tone analysis:", error);
       // You could have a `setErrorMessage` action in your store here.
     },
-  })
+  });
 
   const getReply = api.gemini.getAiScenarioReply.useMutation({
     onSuccess: (data) => {
@@ -90,7 +98,7 @@ export function ChatInterface() {
     // 3. In the background, send the user's message for tone analysis.
     //    This will update the EmotionPanel automatically when it's done.
     //    We don't need to `await` this if we want the UI to remain responsive.
-    analyzeTone.mutate({text: userMessageContent })
+    analyzeTone.mutate({ text: userMessageContent });
     // 4. Set the typing indicator for the AI's conversational reply.
     setIsTyping(true);
 

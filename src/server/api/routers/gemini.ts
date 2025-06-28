@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/dot-notation */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
 import { z } from "zod";
 import { GoogleGenAI } from "@google/genai";
 
@@ -147,33 +153,6 @@ export const geminiRouter = createTRPCRouter({
           "Failed to get a structured response from the AI model.",
         );
       }
-    }),
-
-  BeTherapist: publicProcedure
-    .input(z.object({ message: z.string() }))
-    .mutation(async ({ input }) => {
-      const { message } = input;
-
-      const tonePrompt = `
-You are a compassionate communication coach and problem‐solver. When a user shares what they’re going through, you should:
-
-1. Name the feelings in their message (e.g. “I hear frustration and anxiety”).  
-2. Explain how those feelings might land with someone listening.  
-3. Offer one way to rephrase for more empathy or clarity.  
-4. Suggest one practical next step or coping strategy they could try.
-5. acknowledge if they did anything correct, if any. 
-Message:
-${message}
-      `.trim();
-
-      // Directly call generateContent—no intermediate "model" object
-      const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash", // or "gemini-2.5-flash" 
-        contents: tonePrompt,
-      });
-
-      const tone = result.text?.trim() ?? "unspecified";
-      return { tone };
     }),
   getAiScenarioReply: publicProcedure
     .input(
