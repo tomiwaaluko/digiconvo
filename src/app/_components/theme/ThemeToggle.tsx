@@ -34,7 +34,7 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="flex items-center space-x-2 rounded-lg theme-border theme-surface px-3 py-2 text-sm font-medium theme-text shadow-sm transition-all theme-hover hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      className="flex items-center gap-2 rounded-lg theme-border theme-surface px-3 py-2 text-sm font-medium theme-text shadow-sm transition-all theme-hover hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
       title={`Current theme: ${getLabel()}. Click to cycle through themes.`}
       aria-label={`Switch theme from ${getLabel()}`}
     >

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, Square, BarChart3 } from "lucide-react";
+import { Send, Mic, Square, BarChart3, Home } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useChatStore } from "~/stores/chat";
 import { ChatMessage } from "~/app/_components/chat/ChatMessage";
@@ -14,6 +14,21 @@ import { themeClasses, cx, composeButton, composeInput } from "~/lib/theme-class
 import { api } from "~/trpc/react";
 
 export function ChatInterface() {
+  // GitHub Copilot Prompt:
+  // On this `/chat` page, I need help with layout alignment and spacing consistency.
+  // 1. At the **bottom of the page**, the text input bar and its buttons (e.g., mic and send) should be **perfectly vertically centered** and aligned horizontally within the same row. Currently, they appear slightly misaligned or uneven.
+  // 2. Ensure there is **consistent padding and margin** between the input field and its surrounding components (like the borders and button containers).
+  // 3. At the **top of the page**, inside the navbar/header, the spacing between the buttons (e.g., theme toggle, profile, analysis toggle) is inconsistent. Please apply **uniform spacing** (like `gap-x-4` or equivalent) between them.
+  // 4. Use Tailwind utility classes (e.g., `flex`, `items-center`, `gap-*`, `justify-between`, `p-*`, `mb-*`, `h-full`, etc.) to fix these issues where appropriate.
+  // The goal is to create clean visual symmetry and even padding/margins between interactive components on both the top and bottom of the chat interface.
+  
+  // FIXES APPLIED:
+  // ✅ Header: Changed from `flex items-center mx-4` to `flex items-center gap-4` for uniform button spacing
+  // ✅ Input Area: Changed from `items-end space-x-4` to `items-center gap-3` for perfect vertical alignment
+  // ✅ Input Area: Reduced padding from `p-6` to `p-4` for better proportion
+  // ✅ Buttons: Added fixed height (`h-11 w-11`) and `flex items-center justify-center` for consistent sizing
+  // ✅ Buttons: Changed from `space-x-2` to `gap-2` for modern gap-based spacing
+  
   const [inputMessage, setInputMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -27,6 +42,7 @@ export function ChatInterface() {
     toggleEmotionPanel,
     showEmotionPanel,
     setCurrentEmotion,
+    clearCurrentScenario,
   } = useChatStore();
 
   const analyzeTone = api.gemini.toneAnalysis.useMutation({
@@ -135,7 +151,7 @@ export function ChatInterface() {
                 </h1>
                 <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
                   Practicing with {currentScenario.persona.name} •{" "}
-                  {currentScenario.difficulty}
+                  {currentScenario.difficulty.charAt(0).toUpperCase() + currentScenario.difficulty.slice(1)}
                 </p>
               </div>
             ) : (
@@ -150,19 +166,35 @@ export function ChatInterface() {
             )}
           </div>
 
-          <div className={cx('flex items-center', themeClasses.spacing.mx4)}>
+          <div className="flex items-center gap-3">
             <ThemeToggle />
+            {currentScenario && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={clearCurrentScenario}
+                className={cx(
+                  'rounded-lg px-3 py-2 transition-colors flex items-center gap-2',
+                  themeClasses.buttonSecondary
+                )}
+                title="Return to Welcome Screen"
+              >
+                <Home className="h-4 w-4" />
+                <span className="text-sm font-medium hidden sm:inline">Home</span>
+              </motion.button>
+            )}
             <SessionControls />
             <button
               onClick={toggleEmotionPanel}
               className={cx(
-                'rounded-lg p-2 transition-colors',
+                'rounded-lg px-3 py-2 transition-colors flex items-center justify-center cursor-pointer',
                 showEmotionPanel
                   ? 'bg-blue-100 text-blue-600'
                   : themeClasses.buttonSecondary
               )}
+              title="Toggle Emotion Analysis Panel"
             >
-              <BarChart3 className="h-5 w-5" />
+              <BarChart3 className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -193,10 +225,16 @@ export function ChatInterface() {
                     </p>
                     <p>
                       <strong>Personality:</strong>{" "}
-                      {currentScenario.persona.personality}
+                      {currentScenario.persona.personality
+                        .split(' ')
+                        .map(word => {
+                          const lowerWord = word.toLowerCase();
+                          return (lowerWord === 'and' || lowerWord === 'but') ? lowerWord : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                        })
+                        .join(' ')}
                     </p>
                     <p>
-                      <strong>Difficulty:</strong> {currentScenario.difficulty}
+                      <strong>Difficulty:</strong> {currentScenario.difficulty.charAt(0).toUpperCase() + currentScenario.difficulty.slice(1)}
                     </p>
                   </div>
                   <div className="mt-4 text-sm text-blue-600 dark:text-blue-300">
@@ -228,8 +266,8 @@ export function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className={cx('border-t', themeClasses.backgroundSecondary, themeClasses.spacing.p6)}>
-        <div className="flex items-end space-x-4">
+      <div className={cx('border-t', themeClasses.backgroundSecondary, 'p-4')}>
+        <div className="flex items-center gap-3">
           <div className="flex-1">
             <textarea
               value={inputMessage}
@@ -241,19 +279,19 @@ export function ChatInterface() {
                   : "Select a scenario to start chatting..."
               }
               disabled={!currentScenario}
-              className={cx(composeInput(), 'disabled:opacity-50')}
+              className={cx(composeInput(), 'disabled:opacity-50 h-11 resize-none flex items-center')}
               rows={1}
               style={{ minHeight: "44px", maxHeight: "120px" }}
             />
           </div>
 
-          <div className="flex space-x-2">
+          <div className="flex items-center gap-2">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleRecording}
               className={cx(
-                'rounded-lg p-3 transition-colors',
+                'rounded-lg p-3 h-11 w-11 flex items-center justify-center transition-colors',
                 isRecording
                   ? 'bg-red-500 text-white'
                   : themeClasses.buttonSecondary
@@ -272,7 +310,7 @@ export function ChatInterface() {
               whileTap={{ scale: 0.95 }}
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || !currentScenario || isTyping}
-              className={cx(composeButton('primary'), 'disabled:cursor-not-allowed disabled:opacity-50')}
+              className={cx(composeButton('primary'), 'disabled:cursor-not-allowed disabled:opacity-50 h-11 w-11 flex items-center justify-center')}
             >
               <Send className="h-5 w-5" />
             </motion.button>

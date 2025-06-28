@@ -63,7 +63,7 @@ export function EmotionPanel() {
                   </div>
                   <button
                     onClick={toggleEmotionPanel}
-                    className="rounded-md p-1 hover:bg-gray-100"
+                    className="rounded-md p-1 hover:bg-gray-100 cursor-pointer"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>
