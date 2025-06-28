@@ -46,7 +46,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     // Force a repaint
     body.style.display = 'none';
-    body.offsetHeight; // Trigger reflow
+    void body.offsetHeight; // Trigger reflow
     body.style.display = '';
     
     console.log("Theme applied:", effectiveTheme, "HTML classes:", root.className, "Body classes:", body.className);
