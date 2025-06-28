@@ -28,7 +28,7 @@ export function MobileNavigation() {
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className={cx(
-          'fixed top-4 right-4 z-50 p-2 rounded-lg border shadow-lg',
+          'fixed top-4 right-4 z-50 p-2 rounded-lg border shadow-lg cursor-pointer',
           themeClasses.card,
           themeClasses.layout.transition
         )}
@@ -70,7 +70,7 @@ export function MobileNavigation() {
                     setIsMobileMenuOpen(false);
                   }}
                   className={cx(
-                    'w-full text-left p-3 rounded-lg transition-colors',
+                    'w-full text-left p-3 rounded-lg transition-colors cursor-pointer',
                     themeClasses.buttonSecondary,
                     themeClasses.textPrimary
                   )}
@@ -84,7 +84,7 @@ export function MobileNavigation() {
                     setIsMobileMenuOpen(false);
                   }}
                   className={cx(
-                    'w-full text-left p-3 rounded-lg transition-colors',
+                    'w-full text-left p-3 rounded-lg transition-colors cursor-pointer',
                     themeClasses.buttonSecondary,
                     themeClasses.textPrimary
                   )}
