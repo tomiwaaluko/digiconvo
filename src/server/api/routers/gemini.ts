@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { GoogleGenAI } from "@google/genai";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-const ai = new GoogleGenAI({});
-
 export const geminiRouter = createTRPCRouter({
-
+  // Placeholder for future Gemini API integration
+  hello: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(({ input }) => {
+      return {
+        greeting: `Hello ${input.text}!`,
+      };
+    }),
 })

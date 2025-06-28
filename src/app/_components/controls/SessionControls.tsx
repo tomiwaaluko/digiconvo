@@ -6,7 +6,7 @@ import { useChatStore } from '~/stores/chat';
 import { useNotificationStore } from '../ui/NotificationContainer';
 
 export function SessionControls() {
-  const { currentScenario, messages, clearChat, startNewSession } = useChatStore();
+  const { currentScenario, messages, startNewSession } = useChatStore();
   const { addNotification } = useNotificationStore();
 
   const handleNewSession = () => {
