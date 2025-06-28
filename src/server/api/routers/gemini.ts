@@ -98,13 +98,10 @@ export const geminiRouter = createTRPCRouter({
       `;
 
       try {
-        // The API call is now simpler, with no image part
         const result = await ai.models.generateContent({
           model: modelName,
           contents: [{ role: "user", parts: [{ text: textAnalysisPrompt }] }],
 
-          // --- THE FIX IS HERE ---
-          // All generation settings go inside the 'config' object.
           config: {
             responseMimeType: "application/json",
             responseSchema: {
@@ -171,7 +168,7 @@ ${message}
 
       // Directly call generateContent—no intermediate "model" object
       const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash", // or "gemini-2.5-flash" if you have access
+        model: "gemini-1.5-flash", // or "gemini-2.5-flash" 
         contents: tonePrompt,
       });
 
@@ -216,10 +213,8 @@ ${message}
       `;
 
       try {
-        // --- THE FIX IS HERE ---
-        // We must specify BOTH the model to use and the contents of the prompt.
         const result = await ai.models.generateContent({
-          model: "gemini-1.5-flash", // <-- ADD THIS REQUIRED PROPERTY
+          model: "gemini-1.5-flash", 
           contents: [{ role: "user", parts: [{ text: prompt }] }],
         });
 

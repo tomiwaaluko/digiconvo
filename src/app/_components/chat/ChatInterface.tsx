@@ -99,37 +99,6 @@ export function ChatInterface() {
       scenario: currentScenario,
     });
 
-    // =================================================================
-    // TODO: Here you will eventually call your AI for a conversational response.
-    // This is a separate process from the tone analysis.
-    // For now, we can keep the mock response for demonstration.
-    // = a separate process from the tone analysis.
-    // =================================================================
-    
-    // if (!inputMessage.trim()) return;
-
-    // // Add user message
-    // addMessage({
-    //   content: inputMessage,
-    //   sender: 'user',
-    // });
-
-    // setInputMessage('');
-    // setIsTyping(true);
-
-    // // Simulate AI response (replace with actual Gemini API call)
-    // setTimeout(() => {
-    //   addMessage({
-    //     content: generateMockResponse(inputMessage),
-    //     sender: 'ai',
-    //     emotion: {
-    //       tone: 'Empathetic',
-    //       intensity: Math.floor(Math.random() * 10) + 1,
-    //       color: '#3B82F6'
-    //     }
-    //   });
-    //   setIsTyping(false);
-    // }, 1500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
