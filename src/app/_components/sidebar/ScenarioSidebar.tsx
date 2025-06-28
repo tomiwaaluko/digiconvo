@@ -140,7 +140,7 @@ export function ScenarioSidebar() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col lg:relative fixed left-0 top-0 h-full z-50 shadow-xl dark:shadow-black/50"
+              className="w-80 theme-surface theme-border-r flex flex-col lg:relative fixed left-0 top-0 h-full z-50 shadow-xl theme-shadow"
             >
             {/* Header */}
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
@@ -148,7 +148,7 @@ export function ScenarioSidebar() {
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Scenarios</h2>
                 <button
                   onClick={toggleSidebar}
-                  className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                  className="p-1 rounded-md theme-hover theme-text-secondary"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -160,8 +160,8 @@ export function ScenarioSidebar() {
                   onClick={() => setSelectedCategory(null)}
                   className={`px-3 py-1 rounded-full text-sm transition-colors ${
                     selectedCategory === null
-                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                      ? 'theme-accent theme-text-accent'
+                      : 'theme-secondary theme-text-secondary theme-hover'
                   }`}
                 >
                   All
@@ -172,8 +172,8 @@ export function ScenarioSidebar() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-3 py-1 rounded-full text-sm transition-colors ${
                       selectedCategory === category
-                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                        ? 'theme-accent theme-text-accent'
+                        : 'theme-secondary theme-text-secondary theme-hover'
                     }`}
                   >
                     {category}
@@ -194,8 +194,8 @@ export function ScenarioSidebar() {
                     onClick={() => handleScenarioSelect(scenario)}
                     className={`w-full text-left p-4 rounded-lg border transition-all duration-200 ${
                       isSelected
-                        ? 'border-blue-500 bg-blue-50 shadow-sm dark:border-blue-400 dark:bg-blue-900/30'
-                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm dark:border-gray-600 dark:hover:border-gray-500 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        ? 'theme-border-accent theme-surface-accent shadow-sm'
+                        : 'theme-border theme-hover theme-surface'
                     }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -245,9 +245,9 @@ export function ScenarioSidebar() {
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           onClick={toggleSidebar}
-          className="fixed left-4 top-4 z-10 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md dark:shadow-gray-900/50 transition-shadow"
+          className="fixed left-4 top-4 z-10 p-2 theme-surface rounded-lg theme-border shadow-sm hover:shadow-md theme-shadow transition-shadow"
         >
-          <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+          <ChevronRight className="w-4 h-4 theme-text-secondary" />
         </motion.button>
       )}
     </>

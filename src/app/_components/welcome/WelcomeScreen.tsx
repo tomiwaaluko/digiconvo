@@ -39,26 +39,26 @@ export function WelcomeScreen() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
         >
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="p-6 theme-surface rounded-xl theme-border shadow-sm">
             <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Realistic Conversations</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <h3 className="font-semibold theme-text mb-2">Realistic Conversations</h3>
+            <p className="text-sm theme-text-muted">
               Engage with AI personas that respond emotionally and contextually to your communication style
             </p>
           </div>
           
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="p-6 theme-surface rounded-xl theme-border shadow-sm">
             <BarChart3 className="w-8 h-8 text-green-500 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Emotion Analysis</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <h3 className="font-semibold theme-text mb-2">Emotion Analysis</h3>
+            <p className="text-sm theme-text-muted">
               Get real-time feedback on emotional tone and suggestions for better communication
             </p>
           </div>
           
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="p-6 theme-surface rounded-xl theme-border shadow-sm">
             <Mic className="w-8 h-8 text-purple-500 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Voice Integration</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <h3 className="font-semibold theme-text mb-2">Voice Integration</h3>
+            <p className="text-sm theme-text-muted">
               Practice with voice input and output for more immersive conversation training
             </p>
           </div>
