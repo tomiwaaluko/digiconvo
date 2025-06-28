@@ -59,7 +59,7 @@ interface ChatState {
   startNewSession: () => void;
 }
 
-export const useChatStore = create<ChatState>((set, get) => ({
+export const useChatStore = create<ChatState>((set, _get) => ({
   // Initial state
   messages: [],
   currentScenario: null,
