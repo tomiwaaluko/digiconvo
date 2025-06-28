@@ -41,8 +41,8 @@ export const useThemeStore = create<ThemeState>()(
 
       toggleTheme: () => {
         const { theme } = get();
-        const newTheme: Theme =
-          theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+        // Simplified toggle: just light/dark for testing
+        const newTheme: Theme = theme === "light" ? "dark" : "light";
         get().setTheme(newTheme);
       },
     }),

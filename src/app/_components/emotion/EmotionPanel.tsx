@@ -51,7 +51,7 @@ export function EmotionPanel() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="xl:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+              className="xl:hidden fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-40"
               onClick={toggleEmotionPanel}
             />
             
@@ -60,36 +60,36 @@ export function EmotionPanel() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 300, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-80 bg-white border-l border-gray-200 flex flex-col xl:relative fixed right-0 top-0 h-full z-50"
+              className="w-80 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col xl:relative fixed right-0 top-0 h-full z-50"
             >
             {/* Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
-                  <Brain className="w-5 h-5 text-blue-500" />
-                  <h2 className="text-lg font-semibold text-gray-900">Emotion Analysis</h2>
+                  <Brain className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Emotion Analysis</h2>
                 </div>
                 <button
                   onClick={toggleEmotionPanel}
-                  className="p-1 rounded-md hover:bg-gray-100"
+                  className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                 </button>
               </div>
               
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Real-time emotional tone analysis powered by Google Gemini
               </p>
             </div>
 
             {/* Current Emotion */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">Current Tone</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Current Tone</span>
                   <div className="flex items-center space-x-1">
                     <Activity className="w-4 h-4 text-green-500" />
-                    <span className="text-xs text-green-600">Live</span>
+                    <span className="text-xs text-green-600 dark:text-green-400">Live</span>
                   </div>
                 </div>
                 
@@ -98,7 +98,7 @@ export function EmotionPanel() {
                     className="w-4 h-4 rounded-full"
                     style={{ backgroundColor: displayEmotion.color }}
                   />
-                  <span className="text-lg font-semibold text-gray-900">
+                  <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     {displayEmotion.primaryEmotion}
                   </span>
                 </div>
@@ -107,12 +107,12 @@ export function EmotionPanel() {
               {/* Intensity Meter */}
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">Intensity</span>
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Intensity</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     {displayEmotion.intensity}/10
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <motion.div
                     className="h-2 rounded-full"
                     style={{ backgroundColor: displayEmotion.color }}
@@ -125,16 +125,16 @@ export function EmotionPanel() {
 
               {/* Confidence */}
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Confidence</span>
-                <span className="font-medium text-gray-900">{displayEmotion.confidence}%</span>
+                <span className="text-gray-600 dark:text-gray-400">Confidence</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{displayEmotion.confidence}%</span>
               </div>
             </div>
 
             {/* Suggestions */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-2 mb-3">
                 <AlertCircle className="w-4 h-4 text-amber-500" />
-                <h3 className="font-medium text-gray-900">Suggestions</h3>
+                <h3 className="font-medium text-gray-900 dark:text-gray-100">Suggestions</h3>
               </div>
               
               <div className="space-y-2">
@@ -144,9 +144,9 @@ export function EmotionPanel() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="p-3 bg-amber-50 rounded-lg border border-amber-200"
+                    className="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800"
                   >
-                    <p className="text-sm text-amber-800">{suggestion}</p>
+                    <p className="text-sm text-amber-800 dark:text-amber-200">{suggestion}</p>
                   </motion.div>
                 ))}
               </div>
@@ -155,8 +155,8 @@ export function EmotionPanel() {
             {/* Emotion History */}
             <div className="flex-1 p-6">
               <div className="flex items-center space-x-2 mb-4">
-                <TrendingUp className="w-4 h-4 text-gray-500" />
-                <h3 className="font-medium text-gray-900">Emotion Timeline</h3>
+                <TrendingUp className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                <h3 className="font-medium text-gray-900 dark:text-gray-100">Emotion Timeline</h3>
               </div>
 
               <div className="space-y-3">
@@ -176,11 +176,11 @@ export function EmotionPanel() {
                         }}
                       />
                       <div>
-                        <span className="text-sm font-medium text-gray-900">{item.emotion}</span>
-                        <p className="text-xs text-gray-500">{item.time}</p>
+                        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.emotion}</span>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{item.time}</p>
                       </div>
                     </div>
-                    <div className="text-xs text-gray-500">{item.intensity}/10</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">{item.intensity}/10</div>
                   </div>
                 ))}
               </div>
@@ -196,9 +196,9 @@ export function EmotionPanel() {
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           onClick={toggleEmotionPanel}
-          className="fixed right-4 top-4 z-10 p-2 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+          className="fixed right-4 top-4 z-10 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md dark:shadow-gray-900/50 transition-shadow"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-300" />
         </motion.button>
       )}
     </>

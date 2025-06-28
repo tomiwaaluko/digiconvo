@@ -26,12 +26,12 @@ export function MobileNavigation() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 right-4 z-50 p-2 bg-white rounded-lg border border-gray-200 shadow-lg"
+        className="fixed top-4 right-4 z-50 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-900/50"
       >
         {isMobileMenuOpen ? (
-          <X className="w-5 h-5 text-gray-600" />
+          <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         ) : (
-          <Menu className="w-5 h-5 text-gray-600" />
+          <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         )}
       </button>
 
@@ -43,7 +43,7 @@ export function MobileNavigation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-40"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             
@@ -52,7 +52,7 @@ export function MobileNavigation() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 p-6"
+              className="fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl dark:shadow-gray-900/50 z-50 p-6"
             >
               <div className="mt-12 space-y-4">
                 <button
@@ -60,7 +60,7 @@ export function MobileNavigation() {
                     toggleSidebar();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full text-left p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-gray-100"
                 >
                   {sidebarOpen ? 'Hide Scenarios' : 'Show Scenarios'}
                 </button>
@@ -70,7 +70,7 @@ export function MobileNavigation() {
                     toggleEmotionPanel();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full text-left p-3 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-gray-100"
                 >
                   {showEmotionPanel ? 'Hide Emotion Panel' : 'Show Emotion Panel'}
                 </button>

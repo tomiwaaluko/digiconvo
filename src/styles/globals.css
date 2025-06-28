@@ -87,6 +87,27 @@
     stroke 0.2s ease;
 }
 
+/* Smooth theme transitions */
+html {
+  transition: color-scheme 0.2s ease;
+}
+
+html.light,
+html.dark {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Ensure all theme-aware elements transition smoothly */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 /* Button focus states for accessibility */
 button:focus-visible {
   outline: 2px solid rgb(var(--ring));
@@ -223,4 +244,96 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Force Tailwind dark mode to work correctly */
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+    color-scheme: dark;
+  }
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
+}
+
+/* Explicit dark mode styles to ensure they work */
+.dark {
+  --tw-bg-opacity: 1;
+}
+
+/* Core background overrides */
+.dark .bg-white {
+  background-color: rgb(17 24 39) !important; /* gray-900 */
+}
+
+.dark .bg-gray-50 {
+  background-color: rgb(3 7 18) !important; /* gray-950 */
+}
+
+.dark .bg-gray-100 {
+  background-color: rgb(31 41 55) !important; /* gray-800 */
+}
+
+.dark .bg-gray-200 {
+  background-color: rgb(55 65 81) !important; /* gray-700 */
+}
+
+.dark .bg-gray-800 {
+  background-color: rgb(31 41 55) !important; /* gray-800 */
+}
+
+.dark .bg-gray-900 {
+  background-color: rgb(17 24 39) !important; /* gray-900 */
+}
+
+/* Text color overrides */
+.dark .text-gray-900 {
+  color: rgb(249 250 251) !important; /* gray-50 */
+}
+
+.dark .text-gray-700 {
+  color: rgb(209 213 219) !important; /* gray-300 */
+}
+
+.dark .text-gray-600 {
+  color: rgb(156 163 175) !important; /* gray-400 */
+}
+
+.dark .text-gray-500 {
+  color: rgb(156 163 175) !important; /* gray-400 */
+}
+
+.dark .text-white {
+  color: rgb(255 255 255) !important;
+}
+
+/* Border color overrides */
+.dark .border-gray-200 {
+  border-color: rgb(55 65 81) !important; /* gray-700 */
+}
+
+.dark .border-gray-300 {
+  border-color: rgb(55 65 81) !important; /* gray-700 */
+}
+
+.dark .border-gray-700 {
+  border-color: rgb(55 65 81) !important; /* gray-700 */
+}
+
+/* Gradient backgrounds */
+.dark .bg-gradient-to-r.from-blue-50 {
+  background: linear-gradient(to right, rgb(31 41 55), rgb(31 41 55)) !important;
+}
+
+.dark .bg-gradient-to-r.from-blue-50.to-purple-50 {
+  background: linear-gradient(to right, rgb(31 41 55), rgb(55 65 81)) !important;
+}
+
+.dark .bg-gradient-to-br.from-blue-50 {
+  background: linear-gradient(to bottom right, rgb(17 24 39), rgb(31 41 55)) !important;
 }

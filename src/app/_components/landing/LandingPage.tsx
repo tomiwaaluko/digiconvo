@@ -105,17 +105,17 @@ export function LandingPage() {
           </div>
 
           {/* Feature Preview */}
-          <div className="rounded-2xl border border-white/20 bg-white/60 p-8 shadow-xl backdrop-blur-sm">
+          <div className="rounded-2xl border border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 p-8 shadow-xl backdrop-blur-sm">
             <div className="mb-6 text-center">
-              <div className="mb-4 inline-flex rounded-full bg-indigo-100 p-3">
+              <div className="mb-4 inline-flex rounded-full bg-indigo-100 dark:bg-indigo-900/50 p-3">
                 {React.createElement(features[currentFeature]!.icon, {
-                  className: "w-8 h-8 text-indigo-600",
+                  className: "w-8 h-8 text-indigo-600 dark:text-indigo-400",
                 })}
               </div>
-              <h3 className="mb-2 text-2xl font-bold text-gray-800">
+              <h3 className="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
                 {features[currentFeature]!.title}
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 {features[currentFeature]!.description}
               </p>
             </div>
@@ -127,8 +127,8 @@ export function LandingPage() {
                   key={index}
                   className={`h-2 w-2 rounded-full transition-all duration-300 ${
                     index === currentFeature
-                      ? "w-8 bg-indigo-600"
-                      : "bg-gray-300"
+                      ? "w-8 bg-indigo-600 dark:bg-indigo-400"
+                      : "bg-gray-300 dark:bg-gray-600"
                   }`}
                 />
               ))}
@@ -138,9 +138,9 @@ export function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="bg-white/40 px-6 py-20">
+      <section className="bg-white/40 dark:bg-gray-900/40 px-6 py-20">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-16 text-center text-3xl font-bold text-gray-800 md:text-4xl">
+          <h2 className="mb-16 text-center text-3xl font-bold text-gray-800 dark:text-gray-100 md:text-4xl">
             Why Choose DigiConvo?
           </h2>
 
@@ -185,17 +185,17 @@ export function LandingPage() {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="rounded-xl border border-white/20 bg-white/60 p-6 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:bg-white/80 hover:shadow-lg"
+                className="rounded-xl border border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 p-6 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-800/80 hover:shadow-lg"
               >
                 <div className="mb-4 flex items-center gap-3">
-                  <div className="rounded-lg bg-indigo-100 p-2">
-                    <feature.icon className="h-6 w-6 text-indigo-600" />
+                  <div className="rounded-lg bg-indigo-100 dark:bg-indigo-900/50 p-2">
+                    <feature.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800">
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
                     {feature.title}
                   </h3>
                 </div>
-                <p className="text-gray-600">{feature.description}</p>
+                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
               </div>
             ))}
           </div>
