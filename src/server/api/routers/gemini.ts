@@ -2,7 +2,6 @@ import { z } from "zod";
 import { GoogleGenAI } from "@google/genai";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import type { Message, Scenario } from "~/stores/chat";
 
 const emotionColors: { [key: string]: string } = {
   Happy: "#10B981",

@@ -37,6 +37,24 @@ export function ChatInterface() {
     },
   })
 
+  const getReply = api.gemini.getAiScenarioReply.useMutation({
+    onSuccess: (data) => {
+      addMessage({
+        content: data.reply,
+        sender: 'ai',
+      });
+      setIsTyping(false);
+    },
+    onError: (error) => {
+      console.error("AI reply failed:", error);
+      addMessage({
+        content: "Sorry, I encountered an error. Please try again.",
+        sender: 'ai',
+      });
+      setIsTyping(false);
+    },
+  })
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -55,9 +73,10 @@ export function ChatInterface() {
   };
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || !currentScenario) return;
 
     const userMessageContent = inputMessage;
+    const currentMessages = useChatStore.getState().messages;
 
     // 1. Immediately add the user's message to the UI for a snappy feel.
     addMessage({
@@ -75,19 +94,18 @@ export function ChatInterface() {
     // 4. Set the typing indicator for the AI's conversational reply.
     setIsTyping(true);
 
+    getReply.mutate({
+      messages: [...currentMessages, {sender: 'user', content: userMessageContent}],
+      scenario: currentScenario,
+    });
+
     // =================================================================
     // TODO: Here you will eventually call your AI for a conversational response.
     // This is a separate process from the tone analysis.
     // For now, we can keep the mock response for demonstration.
     // = a separate process from the tone analysis.
     // =================================================================
-    setTimeout(() => {
-      addMessage({
-        content: generateMockResponse(userMessageContent),
-        sender: "ai",
-      });
-      setIsTyping(false);
-    }, 1500);
+    
     // if (!inputMessage.trim()) return;
 
     // // Add user message
@@ -282,22 +300,5 @@ export function ChatInterface() {
         </div>
       </div>
     </div>
-  );
-}
-
-// Mock response generator (replace with actual Gemini API integration)
-function generateMockResponse(_userMessage: string): string {
-  const responses = [
-    "I understand this is difficult for you. Can you help me understand your perspective better?",
-    "That's an interesting point. I hadn't considered it from that angle before.",
-    "I can hear that you're frustrated. What would help make this conversation more productive?",
-    "I appreciate you being direct with me. Let me think about what you've said.",
-    "This is clearly important to you. Can we explore some solutions together?",
-  ];
-
-  const randomIndex = Math.floor(Math.random() * responses.length);
-  return (
-    responses[randomIndex] ??
-    "I understand. Let me think about how to respond to that."
   );
 }
