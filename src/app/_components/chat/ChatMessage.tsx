@@ -24,8 +24,8 @@ export function ChatMessage({ message }: ChatMessageProps) {
           <div
             className={`w-8 h-8 rounded-full flex items-center justify-center ${
               isUser
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-600'
+                ? 'bg-blue-500 text-white dark:bg-blue-600'
+                : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
             }`}
           >
             {isUser ? (
@@ -38,10 +38,10 @@ export function ChatMessage({ message }: ChatMessageProps) {
 
         {/* Message Bubble */}
         <div
-          className={`px-4 py-3 rounded-2xl ${
+          className={`px-4 py-3 rounded-2xl shadow-sm ${
             isUser
-              ? 'bg-blue-500 text-white rounded-br-sm'
-              : 'bg-white text-gray-900 rounded-bl-sm border border-gray-200'
+              ? 'bg-blue-500 text-white rounded-br-sm dark:bg-blue-600'
+              : 'bg-white text-gray-900 rounded-bl-sm border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600'
           }`}
         >
           <p className="text-sm leading-relaxed whitespace-pre-wrap">

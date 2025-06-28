@@ -8,6 +8,7 @@ import { ChatMessage } from "~/app/_components/chat/ChatMessage";
 import { TypingIndicator } from "~/app/_components/chat/TypingIndicator";
 import { WelcomeScreen } from "../welcome/WelcomeScreen";
 import { SessionControls } from "../controls/SessionControls";
+import { ThemeToggle } from "../theme/ThemeToggle";
 
 export function ChatInterface() {
   const [inputMessage, setInputMessage] = useState("");
@@ -114,29 +115,28 @@ export function ChatInterface() {
     setIsRecording(!isRecording);
     // TODO: Implement Whisper STT integration
   };
-
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-white dark:bg-gray-900">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white px-6 py-4">
+      <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
             {currentScenario ? (
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">
+                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {currentScenario.title}
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Practicing with {currentScenario.persona.name} •{" "}
                   {currentScenario.difficulty}
                 </p>
               </div>
             ) : (
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">
+                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
                   DigiConvo
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Choose a scenario to start practicing conversations
                 </p>
               </div>
@@ -144,14 +144,14 @@ export function ChatInterface() {
           </div>
 
           <div className="flex items-center space-x-4">
+            <ThemeToggle />
             <SessionControls />
-
             <button
               onClick={toggleEmotionPanel}
               className={`rounded-lg p-2 transition-colors ${
                 showEmotionPanel
-                  ? "bg-blue-100 text-blue-600"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
               }`}
             >
               <BarChart3 className="h-5 w-5" />
@@ -172,14 +172,14 @@ export function ChatInterface() {
                 animate={{ opacity: 1, y: 0 }}
                 className="py-8 text-center"
               >
-                <div className="rounded-xl border border-blue-200 bg-blue-50 p-6">
-                  <h3 className="mb-2 font-semibold text-blue-900">
+                <div className="rounded-xl border border-blue-200 bg-blue-50 p-6 dark:border-blue-800 dark:bg-blue-900/20">
+                  <h3 className="mb-2 font-semibold text-blue-900 dark:text-blue-100">
                     {currentScenario.title}
                   </h3>
-                  <p className="mb-4 text-blue-700">
+                  <p className="mb-4 text-blue-700 dark:text-blue-200">
                     {currentScenario.description}
                   </p>
-                  <div className="text-sm text-blue-600">
+                  <div className="text-sm text-blue-600 dark:text-blue-300">
                     <p>
                       <strong>Persona:</strong> {currentScenario.persona.name}
                     </p>
@@ -191,7 +191,7 @@ export function ChatInterface() {
                       <strong>Difficulty:</strong> {currentScenario.difficulty}
                     </p>
                   </div>
-                  <div className="mt-4 text-sm text-blue-600">
+                  <div className="mt-4 text-sm text-blue-600 dark:text-blue-300">
                     Start by introducing yourself or jumping right into the
                     conversation.
                   </div>
@@ -220,7 +220,7 @@ export function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 bg-white p-6">
+      <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
         <div className="flex items-end space-x-4">
           <div className="flex-1">
             <textarea
@@ -233,7 +233,7 @@ export function ChatInterface() {
                   : "Select a scenario to start chatting..."
               }
               disabled={!currentScenario}
-              className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full resize-none rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
               rows={1}
               style={{ minHeight: "44px", maxHeight: "120px" }}
             />
@@ -247,7 +247,7 @@ export function ChatInterface() {
               className={`rounded-lg p-3 transition-colors ${
                 isRecording
                   ? "bg-red-500 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
               }`}
               disabled={!currentScenario}
             >
@@ -263,7 +263,7 @@ export function ChatInterface() {
               whileTap={{ scale: 0.95 }}
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || !currentScenario || isTyping}
-              className="rounded-lg bg-blue-500 p-3 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-300"
+              className="rounded-lg bg-blue-500 p-3 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-300 dark:disabled:bg-gray-600"
             >
               <Send className="h-5 w-5" />
             </motion.button>
