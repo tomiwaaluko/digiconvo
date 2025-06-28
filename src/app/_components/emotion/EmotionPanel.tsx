@@ -51,7 +51,7 @@ export function EmotionPanel() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="xl:hidden fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-40"
+              className="xl:hidden fixed inset-0 bg-black/50 dark:bg-black/70 z-40"
               onClick={toggleEmotionPanel}
             />
             
@@ -60,7 +60,7 @@ export function EmotionPanel() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 300, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-80 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col xl:relative fixed right-0 top-0 h-full z-50"
+              className="w-80 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col xl:relative fixed right-0 top-0 h-full z-50 shadow-xl dark:shadow-black/50"
             >
             {/* Header */}
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">

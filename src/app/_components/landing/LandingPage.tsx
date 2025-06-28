@@ -53,7 +53,7 @@ export function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 transition-colors duration-300 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Navigation */}
-      <nav className="border-b border-white/20 bg-white/10 px-6 py-4 backdrop-blur-sm dark:border-gray-700/20 dark:bg-gray-900/10">
+      <nav className="border-b border-blue-200/30 bg-blue-100/20 px-6 py-4 backdrop-blur-sm dark:border-blue-700/20 dark:bg-blue-900/20">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-2">
             <MessageSquare className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
@@ -65,7 +65,7 @@ export function LandingPage() {
             <ThemeToggle />
             <Link
               href="/chat"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+              className="rounded-lg landing-button-primary px-4 py-2 transition-colors duration-200"
             >
               Get Started
             </Link>
@@ -93,29 +93,29 @@ export function LandingPage() {
           <div className="mb-16 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               href="/chat"
-              className="group flex transform items-center justify-center gap-2 rounded-xl bg-indigo-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:bg-indigo-700 hover:shadow-xl dark:bg-indigo-500 dark:hover:bg-indigo-600"
+              className="group flex transform items-center justify-center gap-2 rounded-xl landing-button-primary px-8 py-4 text-lg font-semibold shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
             >
               Start Chatting
               <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
 
-            <button className="rounded-xl border-2 border-gray-300 px-8 py-4 text-lg font-semibold text-gray-700 transition-all duration-200 hover:border-indigo-600 hover:text-indigo-600 dark:border-gray-600 dark:text-gray-300 dark:hover:border-indigo-400 dark:hover:text-indigo-400">
+            <button className="landing-button-secondary rounded-xl px-8 py-4 text-lg font-semibold transition-all duration-200 hover:shadow-md">
               Learn More
             </button>
           </div>
 
           {/* Feature Preview */}
-          <div className="rounded-2xl border border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 p-8 shadow-xl backdrop-blur-sm">
+          <div className="landing-feature-preview rounded-2xl p-8 shadow-xl backdrop-blur-sm">
             <div className="mb-6 text-center">
-              <div className="mb-4 inline-flex rounded-full bg-indigo-100 dark:bg-indigo-900/50 p-3">
+              <div className="mb-4 inline-flex rounded-full landing-icon-bg p-3">
                 {React.createElement(features[currentFeature]!.icon, {
-                  className: "w-8 h-8 text-indigo-600 dark:text-indigo-400",
+                  className: "w-8 h-8 landing-icon",
                 })}
               </div>
-              <h3 className="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-100">
+              <h3 className="mb-2 text-2xl font-bold landing-text-primary">
                 {features[currentFeature]!.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="landing-text-secondary">
                 {features[currentFeature]!.description}
               </p>
             </div>
@@ -138,7 +138,7 @@ export function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="bg-white/40 dark:bg-gray-900/40 px-6 py-20">
+      <section className="bg-blue-50/60 dark:bg-blue-900/20 px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-16 text-center text-3xl font-bold text-gray-800 dark:text-gray-100 md:text-4xl">
             Why Choose DigiConvo?
@@ -182,22 +182,35 @@ export function LandingPage() {
                 description:
                   "Beautiful, intuitive design that makes chatting a pleasure",
               },
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="rounded-xl border border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 p-6 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-800/80 hover:shadow-lg"
-              >
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="rounded-lg bg-indigo-100 dark:bg-indigo-900/50 p-2">
-                    <feature.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+            ].map((feature, index) => {
+              // Create more variety with different card styles
+              const getCardClass = (idx: number) => {
+                switch (idx % 4) {
+                  case 0: return 'landing-card-primary'; // Blue accent
+                  case 1: return 'landing-card-secondary'; // Purple accent
+                  case 2: return 'landing-card'; // Standard theme
+                  case 3: return 'landing-card-accent'; // Alternate blue
+                  default: return 'landing-card';
+                }
+              };
+              
+              return (
+                <div
+                  key={index}
+                  className={`${getCardClass(index)} rounded-xl p-6 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg border`}
+                >
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="landing-icon-bg rounded-lg p-2">
+                      <feature.icon className="h-6 w-6 landing-icon" />
+                    </div>
+                    <h3 className="text-xl font-semibold landing-text-primary">
+                      {feature.title}
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                    {feature.title}
-                  </h3>
+                  <p className="landing-text-secondary">{feature.description}</p>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -205,17 +218,17 @@ export function LandingPage() {
       {/* CTA Section */}
       <section className="px-6 py-20 text-center">
         <div className="mx-auto max-w-4xl">
-          <h2 className="mb-6 text-3xl font-bold text-gray-800 md:text-4xl">
+          <h2 className="mb-6 text-3xl font-bold landing-text-primary md:text-4xl">
             Ready to Start Your AI Conversation?
           </h2>
-          <p className="mb-8 text-xl text-gray-600">
+          <p className="mb-8 text-xl landing-text-secondary">
             Join thousands of users experiencing the future of AI communication
             today.
           </p>
 
           <Link
             href="/chat"
-            className="group inline-flex transform items-center gap-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-12 py-6 text-xl font-semibold text-white shadow-xl transition-all duration-200 hover:-translate-y-1 hover:from-indigo-700 hover:to-purple-700 hover:shadow-2xl"
+            className="group inline-flex transform items-center gap-3 rounded-xl landing-button-primary px-12 py-6 text-xl font-semibold shadow-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl"
           >
             Get Started Now
             <ArrowRight className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-1" />
@@ -224,15 +237,15 @@ export function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/20 bg-white/10 px-6 py-8 backdrop-blur-sm">
+      <footer className="border-t border-blue-200/30 dark:border-blue-700/20 bg-blue-100/20 dark:bg-blue-900/20 px-6 py-8 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl text-center">
           <div className="mb-4 flex items-center justify-center gap-2">
-            <MessageSquare className="h-6 w-6 text-indigo-600" />
-            <span className="text-lg font-semibold text-gray-800">
+            <MessageSquare className="h-6 w-6 landing-icon" />
+            <span className="text-lg font-semibold landing-text-primary">
               DigiConvo
             </span>
           </div>
-          <p className="text-gray-600">
+          <p className="landing-text-secondary">
             Emotionally intelligent AI conversations for everyone.
           </p>
         </div>

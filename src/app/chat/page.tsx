@@ -18,7 +18,7 @@ export default function ChatApp() {
   const showWelcomeInChat = !currentScenario;
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex h-screen bg-white dark:bg-gray-950">
       {/* Scenario Sidebar */}
       <ScenarioSidebar />
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useChatStore } from '~/stores/chat';
+import { themeClasses, cx } from '~/lib/theme-classes';
 
 export function MobileNavigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,12 +27,16 @@ export function MobileNavigation() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 right-4 z-50 p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-900/50"
+        className={cx(
+          'fixed top-4 right-4 z-50 p-2 rounded-lg border shadow-lg',
+          themeClasses.card,
+          themeClasses.layout.transition
+        )}
       >
         {isMobileMenuOpen ? (
-          <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <X className={cx('w-5 h-5', themeClasses.textSecondary)} />
         ) : (
-          <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <Menu className={cx('w-5 h-5', themeClasses.textSecondary)} />
         )}
       </button>
 
@@ -43,7 +48,7 @@ export function MobileNavigation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-40"
+              className="fixed inset-0 bg-black/50 dark:bg-black/70 z-40"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             
@@ -52,7 +57,11 @@ export function MobileNavigation() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl dark:shadow-gray-900/50 z-50 p-6"
+              className={cx(
+                'fixed top-0 right-0 h-full w-80 border-l shadow-2xl z-50 p-6',
+                themeClasses.background,
+                themeClasses.layout.transition
+              )}
             >
               <div className="mt-12 space-y-4">
                 <button
@@ -60,7 +69,11 @@ export function MobileNavigation() {
                     toggleSidebar();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-gray-100"
+                  className={cx(
+                    'w-full text-left p-3 rounded-lg transition-colors',
+                    themeClasses.buttonSecondary,
+                    themeClasses.textPrimary
+                  )}
                 >
                   {sidebarOpen ? 'Hide Scenarios' : 'Show Scenarios'}
                 </button>
@@ -70,7 +83,11 @@ export function MobileNavigation() {
                     toggleEmotionPanel();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-gray-100"
+                  className={cx(
+                    'w-full text-left p-3 rounded-lg transition-colors',
+                    themeClasses.buttonSecondary,
+                    themeClasses.textPrimary
+                  )}
                 >
                   {showEmotionPanel ? 'Hide Emotion Panel' : 'Show Emotion Panel'}
                 </button>

@@ -31,16 +31,25 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Set color scheme for better browser integration
     root.style.colorScheme = effectiveTheme;
     
-    // Force background colors directly as fallback
+    // Force background colors directly as fallback to match CSS variables
     if (effectiveTheme === 'dark') {
-      body.style.backgroundColor = 'rgb(3 7 18)'; // gray-950
-      body.style.color = 'rgb(249 250 251)'; // gray-50
+      body.style.backgroundColor = 'rgb(3 7 18)'; // gray-950 - matches CSS variable
+      body.style.color = 'rgb(249 250 251)'; // gray-50 - matches CSS variable
+      root.style.backgroundColor = 'rgb(3 7 18)';
+      root.style.color = 'rgb(249 250 251)';
     } else {
-      body.style.backgroundColor = 'rgb(249 250 251)'; // gray-50
-      body.style.color = 'rgb(17 24 39)'; // gray-900
+      body.style.backgroundColor = 'rgb(255 255 255)'; // pure white - matches CSS variable
+      body.style.color = 'rgb(0 0 0)'; // pure black - matches CSS variable
+      root.style.backgroundColor = 'rgb(255 255 255)';
+      root.style.color = 'rgb(0 0 0)';
     }
     
-    console.log("Theme applied:", effectiveTheme, "HTML classes:", root.className);
+    // Force a repaint
+    body.style.display = 'none';
+    body.offsetHeight; // Trigger reflow
+    body.style.display = '';
+    
+    console.log("Theme applied:", effectiveTheme, "HTML classes:", root.className, "Body classes:", body.className);
   }, [effectiveTheme, mounted]);
 
   // Prevent flash of wrong theme

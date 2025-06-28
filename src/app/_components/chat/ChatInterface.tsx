@@ -9,6 +9,7 @@ import { TypingIndicator } from "~/app/_components/chat/TypingIndicator";
 import { WelcomeScreen } from "../welcome/WelcomeScreen";
 import { SessionControls } from "../controls/SessionControls";
 import { ThemeToggle } from "../theme/ThemeToggle";
+import { themeClasses, cx, composeButton, composeInput } from "~/lib/theme-classes";
 
 import { api } from "~/trpc/react";
 
@@ -127,43 +128,44 @@ export function ChatInterface() {
     // TODO: Implement Whisper STT integration
   };
   return (
-    <div className="flex h-full flex-col bg-white dark:bg-gray-900">
+    <div className={cx(themeClasses.layout.container, themeClasses.layout.fullHeight, themeClasses.background)}>
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className={cx('border-b', themeClasses.backgroundSecondary, themeClasses.spacing.px6, themeClasses.spacing.py4)}>
+        <div className={themeClasses.layout.spaceBetween}>
           <div>
             {currentScenario ? (
               <div>
-                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h1 className={cx(themeClasses.typography.xl, themeClasses.typography.semibold, themeClasses.textPrimary)}>
                   {currentScenario.title}
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
                   Practicing with {currentScenario.persona.name} •{" "}
                   {currentScenario.difficulty}
                 </p>
               </div>
             ) : (
               <div>
-                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h1 className={cx(themeClasses.typography.xl, themeClasses.typography.semibold, themeClasses.textPrimary)}>
                   DigiConvo
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
                   Choose a scenario to start practicing conversations
                 </p>
               </div>
             )}
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className={cx('flex items-center', themeClasses.spacing.mx4)}>
             <ThemeToggle />
             <SessionControls />
             <button
               onClick={toggleEmotionPanel}
-              className={`rounded-lg p-2 transition-colors ${
+              className={cx(
+                'rounded-lg p-2 transition-colors',
                 showEmotionPanel
-                  ? "bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-              }`}
+                  ? 'bg-blue-100 text-blue-600'
+                  : themeClasses.buttonSecondary
+              )}
             >
               <BarChart3 className="h-5 w-5" />
             </button>
@@ -183,7 +185,7 @@ export function ChatInterface() {
                 animate={{ opacity: 1, y: 0 }}
                 className="py-8 text-center"
               >
-                <div className="rounded-xl border border-blue-200 bg-blue-50 p-6 dark:border-blue-800 dark:bg-blue-900/20">
+                <div className="rounded-xl border border-blue-200 bg-blue-50 p-6 shadow-sm dark:border-blue-800 dark:bg-blue-900/20 dark:shadow-black/10">
                   <h3 className="mb-2 font-semibold text-blue-900 dark:text-blue-100">
                     {currentScenario.title}
                   </h3>
@@ -231,7 +233,7 @@ export function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+      <div className={cx('border-t', themeClasses.backgroundSecondary, themeClasses.spacing.p6)}>
         <div className="flex items-end space-x-4">
           <div className="flex-1">
             <textarea
@@ -244,7 +246,7 @@ export function ChatInterface() {
                   : "Select a scenario to start chatting..."
               }
               disabled={!currentScenario}
-              className="w-full resize-none rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+              className={cx(composeInput(), 'disabled:opacity-50')}
               rows={1}
               style={{ minHeight: "44px", maxHeight: "120px" }}
             />
@@ -255,11 +257,12 @@ export function ChatInterface() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleRecording}
-              className={`rounded-lg p-3 transition-colors ${
+              className={cx(
+                'rounded-lg p-3 transition-colors',
                 isRecording
-                  ? "bg-red-500 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-              }`}
+                  ? 'bg-red-500 text-white'
+                  : themeClasses.buttonSecondary
+              )}
               disabled={!currentScenario}
             >
               {isRecording ? (
@@ -274,7 +277,7 @@ export function ChatInterface() {
               whileTap={{ scale: 0.95 }}
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || !currentScenario || isTyping}
-              className="rounded-lg bg-blue-500 p-3 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-300 dark:disabled:bg-gray-600"
+              className={cx(composeButton('primary'), 'disabled:cursor-not-allowed disabled:opacity-50')}
             >
               <Send className="h-5 w-5" />
             </motion.button>

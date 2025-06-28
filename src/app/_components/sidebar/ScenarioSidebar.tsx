@@ -131,7 +131,7 @@ export function ScenarioSidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+              className="lg:hidden fixed inset-0 bg-black/50 dark:bg-black/70 z-40"
               onClick={toggleSidebar}
             />
             
@@ -140,7 +140,7 @@ export function ScenarioSidebar() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col lg:relative fixed left-0 top-0 h-full z-50"
+              className="w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col lg:relative fixed left-0 top-0 h-full z-50 shadow-xl dark:shadow-black/50"
             >
             {/* Header */}
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
@@ -192,10 +192,10 @@ export function ScenarioSidebar() {
                   <motion.button
                     key={scenario.id}
                     onClick={() => handleScenarioSelect(scenario)}
-                    className={`w-full text-left p-4 rounded-lg border transition-all ${
+                    className={`w-full text-left p-4 rounded-lg border transition-all duration-200 ${
                       isSelected
                         ? 'border-blue-500 bg-blue-50 shadow-sm dark:border-blue-400 dark:bg-blue-900/30'
-                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm dark:border-gray-600 dark:hover:border-gray-500 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750'
+                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm dark:border-gray-600 dark:hover:border-gray-500 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
