@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   TrendingUp, 
   Brain, 
-  Heart, 
   AlertCircle, 
   ChevronRight,
   ChevronLeft,
@@ -37,10 +36,10 @@ const emotionColors = {
 };
 
 export function EmotionPanel() {
-  const { showEmotionPanel, toggleEmotionPanel, emotionHistory, currentEmotion } = useChatStore();
+  const { showEmotionPanel, toggleEmotionPanel, currentEmotion } = useChatStore();
 
   // Use mock data for now
-  const displayEmotion = currentEmotion || mockEmotionData;
+  const displayEmotion = currentEmotion ?? mockEmotionData;
 
   return (
     <>

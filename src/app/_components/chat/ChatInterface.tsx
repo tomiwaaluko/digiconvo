@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, Square, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useChatStore } from '~/stores/chat';
-import { ChatMessage } from './ChatMessage';
-import { TypingIndicator } from './TypingIndicator';
+import { ChatMessage } from '~/app/_components/chat/ChatMessage';
+import { TypingIndicator } from '~/app/_components/chat/TypingIndicator';
 import { WelcomeScreen } from '../welcome/WelcomeScreen';
 import { SessionControls } from '../controls/SessionControls';
 
@@ -71,7 +71,7 @@ export function ChatInterface() {
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      void handleSendMessage();
     }
   };
 
@@ -156,7 +156,7 @@ export function ChatInterface() {
             )}
             
             <AnimatePresence>
-              {messages.map((message, index) => (
+              {messages.map((message, _index) => (
                 <motion.div
                   key={message.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -231,7 +231,7 @@ export function ChatInterface() {
 }
 
 // Mock response generator (replace with actual Gemini API integration)
-function generateMockResponse(userMessage: string): string {
+function generateMockResponse(_userMessage: string): string {
   const responses = [
     "I understand this is difficult for you. Can you help me understand your perspective better?",
     "That's an interesting point. I hadn't considered it from that angle before.",

@@ -22,7 +22,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body className="bg-gray-50 font-sans antialiased">
+      <body 
+        className="bg-gray-50 font-sans antialiased"
+        suppressHydrationWarning={true}
+      >
         <TRPCReactProvider>
           {children}
           <NotificationContainer />
