@@ -78,11 +78,13 @@ export const useChatStore = create<ChatState>((set, _get) => ({
       const toneAnalysisResult = await api.gemini.toneAnalysis({
         text: text,
       });
+      
       set((state) => ({
         currentEmotion: toneAnalysisResult,
         // Also update the history, just like your old setCurrentEmotion action did
         emotionHistory: [...state.emotionHistory, toneAnalysisResult],
       }));
+      
     } catch (e) {
       console.error("Failed tone analysis:", e);
     }
