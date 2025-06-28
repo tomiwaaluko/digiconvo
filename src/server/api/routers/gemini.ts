@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { env } from "~/env";
+import { GoogleGenAI } from "@google/genai";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -16,9 +15,7 @@ const emotionColors: Record<string, string> = {
   Neutral: "#9CA3AF", // Added a fallback/neutral color
 };
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+const ai = new GoogleGenAI({})
 
 export const geminiRouter = createTRPCRouter({
   imageAnalyze: publicProcedure
@@ -57,26 +54,22 @@ export const geminiRouter = createTRPCRouter({
       `;
 
       try {
-        // Initialize the Gemini AI client
-        if (!env.GEMINI_API_KEY) {
-          return "Gemini API key not configured. This is a demo response for frontend development.";
-        }
-        
-        const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: modelName });
-
-        const result = await model.generateContent([
-          {
-            inlineData: {
-              data: image,
-              mimeType: mimeType,
-            },
+        const imagePart = {
+          inlineData: {
+            data: image,
+            mimeType: mimeType,
           },
-          detailedPrompt
-        ]);
+        };
 
-        const response = result.response;
-        return response.text() ?? "AI could not provide analysis";
+        const contents = [imagePart, { text: detailedPrompt }];
+
+        const result = await ai.models.generateContent({
+          model: modelName,
+          contents: contents,
+        });
+
+        return result.text ?? "AI could not provide analysis";
+
       } catch (error) {
         console.error("Error analyzing conversation with Gemini:", error);
         throw new Error("Failed to communicate with the AI model.");
@@ -106,37 +99,41 @@ export const geminiRouter = createTRPCRouter({
       `;
 
       try {
-        // Initialize the Gemini AI client
-        if (!env.GEMINI_API_KEY) {
-          return {
-            primaryEmotion: "Neutral",
-            intensity: 5,
-            confidence: 50,
-            suggestions: ["This is a demo response.", "Configure GEMINI_API_KEY for real analysis."],
-            color: emotionColors.Neutral ?? "#9CA3AF",
-          };
-        }
+        // The API call is now simpler, with no image part
+        const result = await ai.models.generateContent({
+          model: modelName,
+          contents: [{ role: "user", parts: [{ text: textAnalysisPrompt }] }],
+          
+          // --- THE FIX IS HERE ---
+          // All generation settings go inside the 'config' object.
+          config: {
+            responseMimeType: "application/json",
+            responseSchema: {
+              type: "OBJECT",
+              properties: {
+                primaryEmotion: {
+                  type: "STRING",
+                  enum: Object.keys(emotionColors),
+                },
+                intensity: { type: "NUMBER" },
+                confidence: { type: "NUMBER" },
+                suggestions: {
+                  type: "ARRAY",
+                  items: { type: "STRING" },
+                },
+              },
+              required: ["primaryEmotion", "intensity", "confidence", "suggestions"],
+            },
+          },
+        });
         
-        const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: modelName });
-
-        const result = await model.generateContent([textAnalysisPrompt]);
-        
-        const response = result.response;
-        const responseText = response.text();
-        
+        const responseText = result.text;
         if (!responseText) {
           throw new Error("AI did not return a valid response.");
         }
 
-        const parsedJson = JSON.parse(responseText) as {
-          primaryEmotion: string;
-          intensity: number;
-          confidence: number;
-          suggestions: string[];
-        };
-        
-        const color = emotionColors[parsedJson.primaryEmotion] ?? emotionColors.Neutral;
+        const parsedJson = JSON.parse(responseText);
+        const color = emotionColors[parsedJson.primaryEmotion] || emotionColors['Neutral'];
         
         return {
           ...parsedJson,

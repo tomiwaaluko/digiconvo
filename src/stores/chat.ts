@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { api } from '~/trpc/server';
 
 export interface Message {
   id: string;
@@ -49,6 +50,7 @@ interface ChatState {
   showEmotionPanel: boolean;
   
   // Actions
+  analyzeAndSetCurrentEmotion: (text: string) => Promise<void>;
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => void;
   setCurrentScenario: (scenario: Scenario) => void;
   setIsTyping: (typing: boolean) => void;
@@ -71,6 +73,23 @@ export const useChatStore = create<ChatState>((set, _get) => ({
   showEmotionPanel: true,
   
   // Actions
+  analyzeAndSetCurrentEmotion: async (text: string) => {
+    try {
+      const toneAnalysisResult = await api.gemini.toneAnalysis({
+        text: text,
+      });
+      
+      set((state) => ({
+        currentEmotion: toneAnalysisResult,
+        // Also update the history, just like your old setCurrentEmotion action did
+        emotionHistory: [...state.emotionHistory, toneAnalysisResult],
+      }));
+      
+    } catch (e) {
+      console.error("Failed tone analysis:", e);
+    }
+
+  },
   addMessage: (message) => {
     const newMessage: Message = {
       id: crypto.randomUUID(),
