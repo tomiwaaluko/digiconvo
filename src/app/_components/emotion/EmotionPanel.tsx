@@ -1,44 +1,47 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  TrendingUp, 
-  Brain, 
-  AlertCircle, 
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  TrendingUp,
+  Brain,
+  AlertCircle,
   ChevronRight,
   ChevronLeft,
-  Activity
-} from 'lucide-react';
-import { useChatStore } from '~/stores/chat';
+  Activity,
+} from "lucide-react";
+import { useChatStore } from "~/stores/chat";
+import { themeClasses, cx } from "~/lib/theme-classes";
 
 // Mock emotion data - replace with real Gemini analysis
-const mockEmotionData = {
-  primaryEmotion: 'Empathetic',
-  intensity: 7,
-  confidence: 85,
-  suggestions: [
-    'Consider acknowledging their feelings first',
-    'Use "I" statements to avoid defensiveness',
-    'Ask open-ended questions to understand better'
-  ],
-  color: '#3B82F6'
-};
 
 const emotionColors = {
-  'Happy': '#10B981',
-  'Sad': '#6B7280',
-  'Angry': '#EF4444',
-  'Anxious': '#F59E0B',
-  'Empathetic': '#3B82F6',
-  'Frustrated': '#DC2626',
-  'Calm': '#059669',
-  'Excited': '#8B5CF6',
+  Happy: "#10B981",
+  Sad: "#6B7280",
+  Angry: "#EF4444",
+  Anxious: "#F59E0B",
+  Empathetic: "#3B82F6",
+  Frustrated: "#DC2626",
+  Calm: "#059669",
+  Excited: "#8B5CF6",
+};
+
+// Mock emotion data for when no real analysis is available
+const mockEmotionData = {
+  primaryEmotion: "Neutral",
+  intensity: 5,
+  confidence: 75,
+  color: "#6B7280",
+  suggestions: [
+    "Consider asking open-ended questions to encourage discussion",
+    "Try to express your thoughts more clearly"
+  ]
 };
 
 export function EmotionPanel() {
-  const { showEmotionPanel, toggleEmotionPanel, currentEmotion } = useChatStore();
+  const { showEmotionPanel, toggleEmotionPanel, currentEmotion } =
+    useChatStore();
 
-  // Use mock data for now
+  // Use mock data when no current emotion is available
   const displayEmotion = currentEmotion ?? mockEmotionData;
 
   return (
@@ -54,39 +57,43 @@ export function EmotionPanel() {
               className="xl:hidden fixed inset-0 bg-black/50 dark:bg-black/70 z-40"
               onClick={toggleEmotionPanel}
             />
-            
+
             <motion.div
               initial={{ x: 300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 300, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-80 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col xl:relative fixed right-0 top-0 h-full z-50 shadow-xl dark:shadow-black/50"
+              className={cx(
+                'w-80 border-l flex flex-col xl:relative fixed right-0 top-0 h-full z-50 shadow-xl',
+                themeClasses.background,
+                themeClasses.layout.transition
+              )}
             >
             {/* Header */}
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className={cx('p-6 border-b', themeClasses.backgroundSecondary)}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
                   <Brain className="w-5 h-5 text-blue-500 dark:text-blue-400" />
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Emotion Analysis</h2>
+                  <h2 className={cx('text-lg font-semibold', themeClasses.textPrimary)}>Emotion Analysis</h2>
                 </div>
                 <button
                   onClick={toggleEmotionPanel}
-                  className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className={cx('p-1 rounded-md transition-colors', themeClasses.buttonSecondary)}
                 >
-                  <ChevronRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  <ChevronRight className={cx('w-4 h-4', themeClasses.textSecondary)} />
                 </button>
               </div>
               
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className={cx('text-sm', themeClasses.textSecondary)}>
                 Real-time emotional tone analysis powered by Google Gemini
               </p>
             </div>
 
             {/* Current Emotion */}
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="p-6 border-b theme-border">
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Current Tone</span>
+                  <span className="text-sm font-medium theme-text-secondary">Current Tone</span>
                   <div className="flex items-center space-x-1">
                     <Activity className="w-4 h-4 text-green-500" />
                     <span className="text-xs text-green-600 dark:text-green-400">Live</span>
@@ -98,7 +105,7 @@ export function EmotionPanel() {
                     className="w-4 h-4 rounded-full"
                     style={{ backgroundColor: displayEmotion.color }}
                   />
-                  <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  <span className="text-lg font-semibold theme-text">
                     {displayEmotion.primaryEmotion}
                   </span>
                 </div>
@@ -107,12 +114,12 @@ export function EmotionPanel() {
               {/* Intensity Meter */}
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Intensity</span>
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <span className="text-sm theme-text-muted">Intensity</span>
+                  <span className="text-sm font-medium theme-text">
                     {displayEmotion.intensity}/10
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="w-full theme-secondary rounded-full h-2">
                   <motion.div
                     className="h-2 rounded-full"
                     style={{ backgroundColor: displayEmotion.color }}
@@ -125,16 +132,16 @@ export function EmotionPanel() {
 
               {/* Confidence */}
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">Confidence</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{displayEmotion.confidence}%</span>
+                <span className="theme-text-muted">Confidence</span>
+                <span className="font-medium theme-text">{displayEmotion.confidence}%</span>
               </div>
             </div>
 
             {/* Suggestions */}
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="p-6 border-b theme-border">
               <div className="flex items-center space-x-2 mb-3">
                 <AlertCircle className="w-4 h-4 text-amber-500" />
-                <h3 className="font-medium text-gray-900 dark:text-gray-100">Suggestions</h3>
+                <h3 className="font-medium theme-text">Suggestions</h3>
               </div>
               
               <div className="space-y-2">
@@ -155,8 +162,8 @@ export function EmotionPanel() {
             {/* Emotion History */}
             <div className="flex-1 p-6">
               <div className="flex items-center space-x-2 mb-4">
-                <TrendingUp className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                <h3 className="font-medium text-gray-900 dark:text-gray-100">Emotion Timeline</h3>
+                <TrendingUp className="w-4 h-4 theme-text-muted" />
+                <h3 className="font-medium theme-text">Emotion Timeline</h3>
               </div>
 
               <div className="space-y-3">
@@ -180,12 +187,42 @@ export function EmotionPanel() {
                         <p className="text-xs text-gray-500 dark:text-gray-400">{item.time}</p>
                       </div>
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{item.intensity}/10</div>
+                    <div className="text-xs theme-text-muted">{item.intensity}/10</div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+                  {/* Suggestions Section */}
+                  <div className="border-b border-gray-200 p-6">
+                    <div className="mb-3 flex items-center space-x-2">
+                      <AlertCircle className="h-4 w-4 text-amber-500" />
+                      <h3 className="font-medium text-gray-900">Suggestions</h3>
+                    </div>
+                    <div className="space-y-2">
+                      {currentEmotion.suggestions.map((suggestion, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="rounded-lg border border-amber-200 bg-amber-50 p-3"
+                        >
+                          <p className="text-sm text-amber-800">{suggestion}</p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-1 flex-col items-center justify-center p-6 text-center text-gray-500">
+                  <Brain className="mx-auto mb-4 h-12 w-12 text-gray-300" />
+                  <h3 className="mb-2 font-semibold text-gray-700">
+                    Awaiting Analysis
+                  </h3>
+                  <p className="text-sm">
+                    Your message&apos;s emotional tone will appear here once you
+                    send it.
+                  </p>
+                </div>
+              )}
+            </motion.div>
           </>
         )}
       </AnimatePresence>

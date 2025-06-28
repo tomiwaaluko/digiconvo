@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/dot-notation */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
 import { z } from "zod";
 import { GoogleGenAI } from "@google/genai";
 
@@ -15,7 +21,7 @@ const emotionColors: { [key: string]: string } = {
   Neutral: "#9CA3AF",
 };
 
-const ai = new GoogleGenAI({})
+const ai = new GoogleGenAI({});
 
 export const geminiRouter = createTRPCRouter({
   imageAnalyze: publicProcedure
@@ -69,7 +75,6 @@ export const geminiRouter = createTRPCRouter({
         });
 
         return result.text ?? "AI could not provide analysis";
-
       } catch (error) {
         console.error("Error analyzing conversation with Gemini:", error);
         throw new Error("Failed to communicate with the AI model.");
@@ -103,7 +108,7 @@ export const geminiRouter = createTRPCRouter({
         const result = await ai.models.generateContent({
           model: modelName,
           contents: [{ role: "user", parts: [{ text: textAnalysisPrompt }] }],
-          
+
           // --- THE FIX IS HERE ---
           // All generation settings go inside the 'config' object.
           config: {
@@ -122,28 +127,61 @@ export const geminiRouter = createTRPCRouter({
                   items: { type: "STRING" },
                 },
               },
-              required: ["primaryEmotion", "intensity", "confidence", "suggestions"],
+              required: [
+                "primaryEmotion",
+                "intensity",
+                "confidence",
+                "suggestions",
+              ],
             },
           },
         });
-        
+
         const responseText = result.text;
         if (!responseText) {
           throw new Error("AI did not return a valid response.");
         }
 
         const parsedJson = JSON.parse(responseText);
-        const color = emotionColors[parsedJson.primaryEmotion] || emotionColors['Neutral'];
-        
+        const color =
+          emotionColors[parsedJson.primaryEmotion] || emotionColors["Neutral"];
+
         return {
           ...parsedJson,
           color: color,
         };
-
       } catch (error) {
         console.error("Error analyzing text with Gemini:", error);
-        throw new Error("Failed to get a structured response from the AI model.");
+        throw new Error(
+          "Failed to get a structured response from the AI model.",
+        );
       }
+    }),
 
+  BeTherapist: publicProcedure
+    .input(z.object({ message: z.string() }))
+    .mutation(async ({ input }) => {
+      const { message } = input;
+
+      const tonePrompt = `
+You are a compassionate communication coach and problem‐solver. When a user shares what they’re going through, you should:
+
+1. Name the feelings in their message (e.g. “I hear frustration and anxiety”).  
+2. Explain how those feelings might land with someone listening.  
+3. Offer one way to rephrase for more empathy or clarity.  
+4. Suggest one practical next step or coping strategy they could try.
+5. acknowledge if they did anything correct, if any. 
+Message:
+${message}
+      `.trim();
+
+      // Directly call generateContent—no intermediate "model" object
+      const result = await ai.models.generateContent({
+        model: "gemini-1.5-flash", // or "gemini-2.5-flash" if you have access
+        contents: tonePrompt,
+      });
+
+      const tone = result.text?.trim() ?? "unspecified";
+      return { tone };
     }),
 });
