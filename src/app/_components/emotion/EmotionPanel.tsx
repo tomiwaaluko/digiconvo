@@ -147,40 +147,6 @@ export function EmotionPanel() {
                   </p>
                 </div>
               )}
-
-            {/* Emotion History */}
-            <div className="flex-1 p-6">
-              <div className="flex items-center space-x-2 mb-4">
-                <TrendingUp className="w-4 h-4 text-gray-500" />
-                <h3 className="font-medium text-gray-900">Emotion Timeline</h3>
-              </div>
-
-              <div className="space-y-3">
-                {/* Mock historical data */}
-                {[
-                  { emotion: 'Neutral', time: '2 min ago', intensity: 5 },
-                  { emotion: 'Curious', time: '5 min ago', intensity: 6 },
-                  { emotion: 'Empathetic', time: '8 min ago', intensity: 7 },
-                  { emotion: 'Concerned', time: '12 min ago', intensity: 8 },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center justify-between py-2">
-                    <div className="flex items-center space-x-3">
-                      <div
-                        className="w-3 h-3 rounded-full"
-                        style={{ 
-                          backgroundColor: emotionColors[item.emotion as keyof typeof emotionColors] || '#6B7280' 
-                        }}
-                      />
-                      <div>
-                        <span className="text-sm font-medium text-gray-900">{item.emotion}</span>
-                        <p className="text-xs text-gray-500">{item.time}</p>
-                      </div>
-                    </div>
-                    <div className="text-xs text-gray-500">{item.intensity}/10</div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </motion.div>
           </>
         )}
