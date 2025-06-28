@@ -98,9 +98,9 @@ const categoryIcons = {
 };
 
 const difficultyColors = {
-  easy: 'bg-green-100 text-green-800',
-  medium: 'bg-yellow-100 text-yellow-800',
-  hard: 'bg-red-100 text-red-800',
+  easy: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  hard: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
 };
 
 export function ScenarioSidebar() {
@@ -131,7 +131,7 @@ export function ScenarioSidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+              className="lg:hidden fixed inset-0 bg-black/50 dark:bg-black/70 z-40"
               onClick={toggleSidebar}
             />
             
@@ -140,15 +140,15 @@ export function ScenarioSidebar() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="w-80 bg-white border-r border-gray-200 flex flex-col lg:relative fixed left-0 top-0 h-full z-50"
+              className="w-80 theme-surface theme-border-r flex flex-col lg:relative fixed left-0 top-0 h-full z-50 shadow-xl theme-shadow"
             >
             {/* Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Scenarios</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Scenarios</h2>
                 <button
                   onClick={toggleSidebar}
-                  className="p-1 rounded-md hover:bg-gray-100"
+                  className="p-1 rounded-md theme-hover theme-text-secondary"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -160,8 +160,8 @@ export function ScenarioSidebar() {
                   onClick={() => setSelectedCategory(null)}
                   className={`px-3 py-1 rounded-full text-sm transition-colors ${
                     selectedCategory === null
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'theme-accent theme-text-accent'
+                      : 'theme-secondary theme-text-secondary theme-hover'
                   }`}
                 >
                   All
@@ -172,8 +172,8 @@ export function ScenarioSidebar() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-3 py-1 rounded-full text-sm transition-colors ${
                       selectedCategory === category
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'theme-accent theme-text-accent'
+                        : 'theme-secondary theme-text-secondary theme-hover'
                     }`}
                   >
                     {category}
@@ -192,35 +192,35 @@ export function ScenarioSidebar() {
                   <motion.button
                     key={scenario.id}
                     onClick={() => handleScenarioSelect(scenario)}
-                    className={`w-full text-left p-4 rounded-lg border transition-all ${
+                    className={`w-full text-left p-4 rounded-lg border transition-all duration-200 ${
                       isSelected
-                        ? 'border-blue-500 bg-blue-50 shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                        ? 'theme-border-accent theme-surface-accent shadow-sm'
+                        : 'theme-border theme-hover theme-surface'
                     }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <IconComponent className="w-4 h-4 text-gray-500" />
+                        <IconComponent className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${difficultyColors[scenario.difficulty]}`}>
                           {scenario.difficulty}
                         </span>
                       </div>
                       {isSelected && (
-                        <Star className="w-4 h-4 text-blue-500 fill-current" />
+                        <Star className="w-4 h-4 text-blue-500 dark:text-blue-400 fill-current" />
                       )}
                     </div>
                     
-                    <h3 className="font-medium text-gray-900 mb-1">
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-1">
                       {scenario.title}
                     </h3>
                     
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
                       {scenario.description}
                     </p>
                     
-                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                    <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
                       <div className="flex items-center space-x-1">
                         <User className="w-3 h-3" />
                         <span>{scenario.persona.name}</span>
@@ -245,9 +245,9 @@ export function ScenarioSidebar() {
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           onClick={toggleSidebar}
-          className="fixed left-4 top-4 z-10 p-2 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+          className="fixed left-4 top-4 z-10 p-2 theme-surface rounded-lg theme-border shadow-sm hover:shadow-md theme-shadow transition-shadow"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-4 h-4 theme-text-secondary" />
         </motion.button>
       )}
     </>

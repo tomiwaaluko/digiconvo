@@ -1,0 +1,20 @@
+{
+  "name": "DigiConvo - AI Conversation Practice",
+  "short_name": "DigiConvo",
+  "description": "Practice difficult conversations with AI-powered emotional intelligence",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "social", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}

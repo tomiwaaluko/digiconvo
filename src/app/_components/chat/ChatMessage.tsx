@@ -20,14 +20,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
     >
       <div className={`flex max-w-[70%] ${isUser ? 'flex-row-reverse' : 'flex-row'} items-end space-x-2`}>
         {/* Avatar */}
-        <div className={`flex-shrink-0 ${isUser ? 'ml-2' : 'mr-2'}`}>
-          <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              isUser
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 text-gray-600'
-            }`}
-          >
+        <div className={`flex-shrink-0 ${isUser ? 'ml-2' : 'mr-2'}`}>        <div
+          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            isUser
+              ? 'theme-accent theme-text-inverse'
+              : 'theme-secondary theme-text-secondary'
+          }`}
+        >
             {isUser ? (
               <User className="w-4 h-4" />
             ) : (
@@ -38,10 +37,10 @@ export function ChatMessage({ message }: ChatMessageProps) {
 
         {/* Message Bubble */}
         <div
-          className={`px-4 py-3 rounded-2xl ${
+          className={`px-4 py-3 rounded-2xl shadow-sm ${
             isUser
-              ? 'bg-blue-500 text-white rounded-br-sm'
-              : 'bg-white text-gray-900 rounded-bl-sm border border-gray-200'
+              ? 'theme-accent theme-text-inverse rounded-br-sm'
+              : 'theme-surface theme-text rounded-bl-sm theme-border'
           }`}
         >
           <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -55,7 +54,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: message.emotion.color }}
               />
-              <span className={`text-xs ${isUser ? 'text-blue-100' : 'text-gray-500'}`}>
+              <span className={`text-xs ${isUser ? 'text-blue-100' : 'theme-text-muted'}`}>
                 {message.emotion.tone} ({message.emotion.intensity}/10)
               </span>
             </div>

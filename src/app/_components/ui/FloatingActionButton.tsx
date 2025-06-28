@@ -42,7 +42,7 @@ export function FloatingActionButton() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ delay: index * 0.1 }}
                 onClick={action.onClick}
-                className={`${action.color} text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center space-x-2 group`}
+                className={`${action.color} text-white p-3 rounded-full shadow-lg hover:shadow-xl dark:shadow-gray-900/50 transition-all flex items-center space-x-2 group`}
               >
                 <action.icon className="w-5 h-5" />
                 <span className="hidden group-hover:block whitespace-nowrap text-sm pr-2">
@@ -58,7 +58,7 @@ export function FloatingActionButton() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all"
+        className="bg-gradient-to-br from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl dark:shadow-gray-900/50 transition-all"
       >
         <motion.div
           animate={{ rotate: isOpen ? 45 : 0 }}
