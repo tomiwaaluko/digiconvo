@@ -2,6 +2,7 @@ import { z } from "zod";
 import { GoogleGenAI } from "@google/genai";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import type { Message, Scenario } from "~/stores/chat";
 
 const emotionColors: { [key: string]: string } = {
   Happy: "#10B981",
@@ -15,7 +16,7 @@ const emotionColors: { [key: string]: string } = {
   Neutral: "#9CA3AF",
 };
 
-const ai = new GoogleGenAI({})
+const ai = new GoogleGenAI({});
 
 export const geminiRouter = createTRPCRouter({
   imageAnalyze: publicProcedure
@@ -69,7 +70,6 @@ export const geminiRouter = createTRPCRouter({
         });
 
         return result.text ?? "AI could not provide analysis";
-
       } catch (error) {
         console.error("Error analyzing conversation with Gemini:", error);
         throw new Error("Failed to communicate with the AI model.");
@@ -103,7 +103,7 @@ export const geminiRouter = createTRPCRouter({
         const result = await ai.models.generateContent({
           model: modelName,
           contents: [{ role: "user", parts: [{ text: textAnalysisPrompt }] }],
-          
+
           // --- THE FIX IS HERE ---
           // All generation settings go inside the 'config' object.
           config: {
@@ -122,31 +122,38 @@ export const geminiRouter = createTRPCRouter({
                   items: { type: "STRING" },
                 },
               },
-              required: ["primaryEmotion", "intensity", "confidence", "suggestions"],
+              required: [
+                "primaryEmotion",
+                "intensity",
+                "confidence",
+                "suggestions",
+              ],
             },
           },
         });
-        
+
         const responseText = result.text;
         if (!responseText) {
           throw new Error("AI did not return a valid response.");
         }
 
         const parsedJson = JSON.parse(responseText);
-        const color = emotionColors[parsedJson.primaryEmotion] || emotionColors['Neutral'];
-        
+        const color =
+          emotionColors[parsedJson.primaryEmotion] || emotionColors["Neutral"];
+
         return {
           ...parsedJson,
           color: color,
         };
-
       } catch (error) {
         console.error("Error analyzing text with Gemini:", error);
-        throw new Error("Failed to get a structured response from the AI model.");
+        throw new Error(
+          "Failed to get a structured response from the AI model.",
+        );
       }
     }),
 
-BeTherapist: publicProcedure
+  BeTherapist: publicProcedure
     .input(z.object({ message: z.string() }))
     .mutation(async ({ input }) => {
       const { message } = input;
@@ -165,17 +172,70 @@ ${message}
 
       // Directly call generateContent—no intermediate "model" object
       const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash",   // or "gemini-2.5-flash" if you have access
-        contents: tonePrompt
+        model: "gemini-1.5-flash", // or "gemini-2.5-flash" if you have access
+        contents: tonePrompt,
       });
 
-     const tone = result.text?.trim() ?? "unspecified";
+      const tone = result.text?.trim() ?? "unspecified";
       return { tone };
     }),
+  getAiScenarioReply: publicProcedure
+    .input(
+      z.object({
+        messages: z.array(
+          z.object({
+            sender: z.enum(["user", "ai"]),
+            content: z.string(),
+          }),
+        ),
+        scenario: z.object({
+          persona: z.object({
+            name: z.string(),
+            personality: z.string(),
+            emotionalTendency: z.string(),
+          }),
+          description: z.string(),
+        }),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { messages, scenario } = input;
 
+      const prompt = `
+        You are a conversational practice partner. Your name is ${scenario.persona.name}.
+        Your personality is: "${scenario.persona.personality}".
+        Your emotional tendency is: "${scenario.persona.emotionalTendency}".
 
+        You are role-playing in a conversation with a user. Do NOT break character.
+        The scenario of this role play is: "${scenario.description}".
+        The following is the conversation history so far. The user's last message is at the end.
+        
+        ${messages.map((msg) => `${msg.sender === "user" ? "The User" : scenario.persona.name}: ${msg.content}`).join("\n")}
+        
+        Based on your personality and the conversation history, provide a natural, in-character response to the user's last message.
+        Your response must be a single block of text. Do not add any extra formatting.
+      `;
 
+      try {
+        // --- THE FIX IS HERE ---
+        // We must specify BOTH the model to use and the contents of the prompt.
+        const result = await ai.models.generateContent({
+          model: "gemini-1.5-flash", // <-- ADD THIS REQUIRED PROPERTY
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+        });
+
+        const responseText = result.text;
+
+        if (!responseText) {
+          throw new Error("AI did not return a reply.");
+        }
+
+        return {
+          reply: responseText,
+        };
+      } catch (error) {
+        console.error("Error getting AI reply:", error);
+        throw new Error("Failed to get a reply from the AI model.");
+      }
+    }),
 });
-
-
-
