@@ -11,12 +11,7 @@ import { WelcomeScreen } from "~/app/_components/welcome/WelcomeScreen";
 
 export default function ChatApp() {
   const { 
-    sidebarOpen, 
-    showEmotionPanel, 
-    messages, 
-    currentScenario,
-    toggleSidebar,
-    toggleEmotionPanel 
+    currentScenario
   } = useChatStore();
 
   // Show welcome screen in the main chat area if no scenario is selected

@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { env } from "~/env";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-const ai = new GoogleGenAI({});
-
-const emotionColors: { [key: string]: string } = {
+const emotionColors: Record<string, string> = {
   Happy: "#10B981",
   Sad: "#6B7280",
   Angry: "#EF4444",
@@ -28,7 +27,7 @@ export const geminiRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const { image, mimeType, conversationContext } = input;
-      const modelName = "gemini-1.5-flash"; // A powerful and fast multimodal model
+      const modelName = "gemini-1.5-flash";
 
       // The detailed prompt to guide Gemini's analysis
       const detailedPrompt = `
@@ -36,7 +35,7 @@ export const geminiRouter = createTRPCRouter({
         Your task is to analyze the text message conversation from the provided screenshot.
         The user is seeking to improve their communication in difficult and sensitive situations.
 
-        Here is some context from the user about this conversation: "${conversationContext || "No additional context provided."}"
+        Here is some context from the user about this conversation: "${conversationContext ?? "No additional context provided."}"
 
         Please follow these steps in your analysis:
 
@@ -54,21 +53,26 @@ export const geminiRouter = createTRPCRouter({
       `;
 
       try {
-        const imagePart = {
-          inlineData: {
-            data: image,
-            mimeType: mimeType,
+        // Initialize the Gemini AI client
+        if (!env.GEMINI_API_KEY) {
+          return "Gemini API key not configured. This is a demo response for frontend development.";
+        }
+        
+        const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: modelName });
+
+        const result = await model.generateContent([
+          {
+            inlineData: {
+              data: image,
+              mimeType: mimeType,
+            },
           },
-        };
+          detailedPrompt
+        ]);
 
-        const contents = [imagePart, { text: detailedPrompt }];
-
-        const result = await ai.models.generateContent({
-          model: modelName,
-          contents: contents,
-        });
-
-        return result.text ?? "AI could not provide analysis";
+        const response = result.response;
+        return response.text() ?? "AI could not provide analysis";
       } catch (error) {
         console.error("Error analyzing conversation with Gemini:", error);
         throw new Error("Failed to communicate with the AI model.");
@@ -79,7 +83,7 @@ export const geminiRouter = createTRPCRouter({
     .input(z.object({ text: z.string() }))
     .mutation(async ({ input }) => {
       const { text } = input;
-      const modelName = "gemini-1.5-flash"; // A powerful and fast multimodal model
+      const modelName = "gemini-1.5-flash";
 
       const textAnalysisPrompt = `
         You are an expert communication analyst and an empathetic coach.
@@ -97,42 +101,38 @@ export const geminiRouter = createTRPCRouter({
         - suggestions: Provide 2-3 brief, concrete, and actionable suggestions for how the author could improve their communication to be more effective or empathetic.
       `;
 
-    try {
-        // The API call is now simpler, with no image part
-        const result = await ai.models.generateContent({
-          model: modelName,
-          contents: [{ role: "user", parts: [{ text: textAnalysisPrompt }] }],
-          
-          // --- THE FIX IS HERE ---
-          // All generation settings go inside the 'config' object.
-          config: {
-            responseMimeType: "application/json",
-            responseSchema: {
-              type: "OBJECT",
-              properties: {
-                primaryEmotion: {
-                  type: "STRING",
-                  enum: Object.keys(emotionColors),
-                },
-                intensity: { type: "NUMBER" },
-                confidence: { type: "NUMBER" },
-                suggestions: {
-                  type: "ARRAY",
-                  items: { type: "STRING" },
-                },
-              },
-              required: ["primaryEmotion", "intensity", "confidence", "suggestions"],
-            },
-          },
-        });
+      try {
+        // Initialize the Gemini AI client
+        if (!env.GEMINI_API_KEY) {
+          return {
+            primaryEmotion: "Neutral",
+            intensity: 5,
+            confidence: 50,
+            suggestions: ["This is a demo response.", "Configure GEMINI_API_KEY for real analysis."],
+            color: emotionColors.Neutral ?? "#9CA3AF",
+          };
+        }
         
-        const responseText = result.text;
+        const genAI = new GoogleGenerativeAI(env.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: modelName });
+
+        const result = await model.generateContent([textAnalysisPrompt]);
+        
+        const response = result.response;
+        const responseText = response.text();
+        
         if (!responseText) {
           throw new Error("AI did not return a valid response.");
         }
 
-        const parsedJson = JSON.parse(responseText);
-        const color = emotionColors[parsedJson.primaryEmotion] || emotionColors['Neutral'];
+        const parsedJson = JSON.parse(responseText) as {
+          primaryEmotion: string;
+          intensity: number;
+          confidence: number;
+          suggestions: string[];
+        };
+        
+        const color = emotionColors[parsedJson.primaryEmotion] ?? emotionColors.Neutral;
         
         return {
           ...parsedJson,
@@ -143,6 +143,5 @@ export const geminiRouter = createTRPCRouter({
         console.error("Error analyzing text with Gemini:", error);
         throw new Error("Failed to get a structured response from the AI model.");
       }
-
     }),
 });
