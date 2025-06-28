@@ -104,13 +104,10 @@ export const geminiRouter = createTRPCRouter({
       `;
 
       try {
-        // The API call is now simpler, with no image part
         const result = await ai.models.generateContent({
           model: modelName,
           contents: [{ role: "user", parts: [{ text: textAnalysisPrompt }] }],
 
-          // --- THE FIX IS HERE ---
-          // All generation settings go inside the 'config' object.
           config: {
             responseMimeType: "application/json",
             responseSchema: {
@@ -157,31 +154,61 @@ export const geminiRouter = createTRPCRouter({
         );
       }
     }),
-
-  BeTherapist: publicProcedure
-    .input(z.object({ message: z.string() }))
+  getAiScenarioReply: publicProcedure
+    .input(
+      z.object({
+        messages: z.array(
+          z.object({
+            sender: z.enum(["user", "ai"]),
+            content: z.string(),
+          }),
+        ),
+        scenario: z.object({
+          persona: z.object({
+            name: z.string(),
+            personality: z.string(),
+            emotionalTendency: z.string(),
+          }),
+          description: z.string(),
+        }),
+      }),
+    )
     .mutation(async ({ input }) => {
-      const { message } = input;
+      const { messages, scenario } = input;
 
-      const tonePrompt = `
-You are a compassionate communication coach and problem‐solver. When a user shares what they’re going through, you should:
+      const prompt = `
+        You are a conversational practice partner. Your name is ${scenario.persona.name}.
+        Your personality is: "${scenario.persona.personality}".
+        Your emotional tendency is: "${scenario.persona.emotionalTendency}".
 
-1. Name the feelings in their message (e.g. “I hear frustration and anxiety”).  
-2. Explain how those feelings might land with someone listening.  
-3. Offer one way to rephrase for more empathy or clarity.  
-4. Suggest one practical next step or coping strategy they could try.
-5. acknowledge if they did anything correct, if any. 
-Message:
-${message}
-      `.trim();
+        You are role-playing in a conversation with a user. Do NOT break character.
+        The scenario of this role play is: "${scenario.description}".
+        The following is the conversation history so far. The user's last message is at the end.
+        
+        ${messages.map((msg) => `${msg.sender === "user" ? "The User" : scenario.persona.name}: ${msg.content}`).join("\n")}
+        
+        Based on your personality and the conversation history, provide a natural, in-character response to the user's last message.
+        Your response must be a single block of text. Do not add any extra formatting.
+      `;
 
-      // Directly call generateContent—no intermediate "model" object
-      const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash", // or "gemini-2.5-flash" if you have access
-        contents: tonePrompt,
-      });
+      try {
+        const result = await ai.models.generateContent({
+          model: "gemini-1.5-flash", 
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+        });
 
-      const tone = result.text?.trim() ?? "unspecified";
-      return { tone };
+        const responseText = result.text;
+
+        if (!responseText) {
+          throw new Error("AI did not return a reply.");
+        }
+
+        return {
+          reply: responseText,
+        };
+      } catch (error) {
+        console.error("Error getting AI reply:", error);
+        throw new Error("Failed to get a reply from the AI model.");
+      }
     }),
 });
