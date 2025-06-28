@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-const emotionColors: Record<string, string> = {
+const emotionColors: { [key: string]: string } = {
   Happy: "#10B981",
   Sad: "#6B7280",
   Angry: "#EF4444",
@@ -12,7 +12,7 @@ const emotionColors: Record<string, string> = {
   Frustrated: "#DC2626",
   Calm: "#059669",
   Excited: "#8B5CF6",
-  Neutral: "#9CA3AF", // Added a fallback/neutral color
+  Neutral: "#9CA3AF",
 };
 
 const ai = new GoogleGenAI({})
