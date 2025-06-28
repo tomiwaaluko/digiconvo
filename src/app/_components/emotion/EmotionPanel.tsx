@@ -12,17 +12,7 @@ import {
 import { useChatStore } from '~/stores/chat';
 
 // Mock emotion data - replace with real Gemini analysis
-const mockEmotionData = {
-  primaryEmotion: 'Empathetic',
-  intensity: 7,
-  confidence: 85,
-  suggestions: [
-    'Consider acknowledging their feelings first',
-    'Use "I" statements to avoid defensiveness',
-    'Ask open-ended questions to understand better'
-  ],
-  color: '#3B82F6'
-};
+
 
 const emotionColors = {
   'Happy': '#10B981',
@@ -39,7 +29,7 @@ export function EmotionPanel() {
   const { showEmotionPanel, toggleEmotionPanel, currentEmotion } = useChatStore();
 
   // Use mock data for now
-  const displayEmotion = currentEmotion ?? mockEmotionData;
+  // const displayEmotion = currentEmotion ?? mockEmotionData;
 
   return (
     <>
@@ -83,74 +73,80 @@ export function EmotionPanel() {
             </div>
 
             {/* Current Emotion */}
-            <div className="p-6 border-b border-gray-200">
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">Current Tone</span>
-                  <div className="flex items-center space-x-1">
-                    <Activity className="w-4 h-4 text-green-500" />
-                    <span className="text-xs text-green-600">Live</span>
+            {currentEmotion ? (
+                <div className="flex-1 overflow-y-auto">
+                  {/* Current Emotion Section */}
+                  <div className="p-6 border-b border-gray-200">
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-700">Current Tone</span>
+                        <div className="flex items-center space-x-1">
+                          <Activity className="w-4 h-4 text-green-500" />
+                          <span className="text-xs text-green-600">Live</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: currentEmotion.color }}
+                        />
+                        <span className="text-lg font-semibold text-gray-900">
+                          {currentEmotion.primaryEmotion}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Intensity Meter */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm text-gray-600">Intensity</span>
+                        <span className="text-sm font-medium text-gray-900">{currentEmotion.intensity}/10</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <motion.div
+                          className="h-2 rounded-full"
+                          style={{ backgroundColor: currentEmotion.color }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${currentEmotion.intensity * 10}%` }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      </div>
+                    </div>
+                    {/* Confidence */}
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Confidence</span>
+                      <span className="font-medium text-gray-900">{currentEmotion.confidence}%</span>
+                    </div>
+                  </div>
+                  {/* Suggestions Section */}
+                  <div className="p-6 border-b border-gray-200">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <AlertCircle className="w-4 h-4 text-amber-500" />
+                      <h3 className="font-medium text-gray-900">Suggestions</h3>
+                    </div>
+                    <div className="space-y-2">
+                      {currentEmotion.suggestions.map((suggestion, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="p-3 bg-amber-50 rounded-lg border border-amber-200"
+                        >
+                          <p className="text-sm text-amber-800">{suggestion}</p>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                
-                <div className="flex items-center space-x-3">
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: displayEmotion.color }}
-                  />
-                  <span className="text-lg font-semibold text-gray-900">
-                    {displayEmotion.primaryEmotion}
-                  </span>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center p-6 text-center text-gray-500">
+                  <Brain className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                  <h3 className="font-semibold text-gray-700 mb-2">Awaiting Analysis</h3>
+                  <p className="text-sm">
+                    Your message's emotional tone will appear here once you send it.
+                  </p>
                 </div>
-              </div>
-
-              {/* Intensity Meter */}
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">Intensity</span>
-                  <span className="text-sm font-medium text-gray-900">
-                    {displayEmotion.intensity}/10
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <motion.div
-                    className="h-2 rounded-full"
-                    style={{ backgroundColor: displayEmotion.color }}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${displayEmotion.intensity * 10}%` }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </div>
-              </div>
-
-              {/* Confidence */}
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Confidence</span>
-                <span className="font-medium text-gray-900">{displayEmotion.confidence}%</span>
-              </div>
-            </div>
-
-            {/* Suggestions */}
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center space-x-2 mb-3">
-                <AlertCircle className="w-4 h-4 text-amber-500" />
-                <h3 className="font-medium text-gray-900">Suggestions</h3>
-              </div>
-              
-              <div className="space-y-2">
-                {displayEmotion.suggestions.map((suggestion, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="p-3 bg-amber-50 rounded-lg border border-amber-200"
-                  >
-                    <p className="text-sm text-amber-800">{suggestion}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+              )}
 
             {/* Emotion History */}
             <div className="flex-1 p-6">
