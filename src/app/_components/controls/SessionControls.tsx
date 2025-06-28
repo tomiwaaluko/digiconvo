@@ -28,7 +28,15 @@ export function SessionControls() {
   };
 
   const handleExportSession = () => {
-    // TODO: Implement session export
+    if (!currentScenario || messages.length === 0) {
+      addNotification({
+        type: 'error',
+        title: 'Export Failed',
+        message: 'There is no session data to export.',
+      });
+      return;
+    }
+    
     const sessionData = {
       scenario: currentScenario,
       messages: messages,
