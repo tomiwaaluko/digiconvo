@@ -48,7 +48,7 @@
 .dark {
   /* Dark theme colors */
   --background: 3 7 18; /* gray-950 */
-  --foreground: 0 0 0; /* gray-50 */
+  --foreground: 249 250 251; /* gray-50 */
   --card: 17 24 39; /* gray-900 */
   --card-foreground: 249 250 251; /* gray-50 */
   --popover: 17 24 39; /* gray-900 */
@@ -127,11 +127,15 @@ html {
 
 html.light,
 html.dark {
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 body {
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 /* Ensure all theme-aware elements transition smoothly */
@@ -166,14 +170,14 @@ select:focus {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Prevent zoom on input focus */
   input,
   textarea,
   select {
     font-size: 16px;
   }
-  
+
   /* Better scrolling on iOS */
   .overflow-scroll,
   .overflow-y-auto,
@@ -187,15 +191,15 @@ select:focus {
   .safe-top {
     padding-top: max(0.5rem, env(safe-area-inset-top));
   }
-  
+
   .safe-bottom {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
-  
+
   .safe-left {
     padding-left: max(0.5rem, env(safe-area-inset-left));
   }
-  
+
   .safe-right {
     padding-right: max(0.5rem, env(safe-area-inset-right));
   }
@@ -203,11 +207,19 @@ select:focus {
 
 /* Improved theme-aware gradients */
 .gradient-primary {
-  background: linear-gradient(135deg, rgb(var(--primary)) 0%, rgb(var(--accent)) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(var(--primary)) 0%,
+    rgb(var(--accent)) 100%
+  );
 }
 
 .dark .gradient-primary {
-  background: linear-gradient(135deg, rgb(var(--primary)) 0%, rgb(var(--accent)) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(var(--primary)) 0%,
+    rgb(var(--accent)) 100%
+  );
 }
 
 /* Enhanced loading states */
@@ -285,12 +297,18 @@ html.light .bg-gray-950 {
 }
 
 /* Force theme on common container patterns */
-html.light .min-h-screen, html.light .h-screen, html.light .h-full, html.light .flex.h-screen {
+html.light .min-h-screen,
+html.light .h-screen,
+html.light .h-full,
+html.light .flex.h-screen {
   background-color: rgb(255 255 255) !important;
   color: rgb(0 0 0) !important;
 }
 
-html.dark .min-h-screen, html.dark .h-screen, html.dark .h-full, html.dark .flex.h-screen {
+html.dark .min-h-screen,
+html.dark .h-screen,
+html.dark .h-full,
+html.dark .flex.h-screen {
   background-color: rgb(3 7 18) !important;
   color: rgb(249 250 251) !important;
 }
@@ -308,20 +326,32 @@ html.dark > body > * {
 
 /* Target specific patterns that might override theme - exclude text gradients */
 html.light [class*="bg-gradient-to"]:not(.bg-clip-text) {
-  background: linear-gradient(to bottom right, rgb(255 255 255), rgb(248 250 252)) !important;
+  background: linear-gradient(
+    to bottom right,
+    rgb(255 255 255),
+    rgb(248 250 252)
+  ) !important;
 }
 
 html.dark [class*="bg-gradient-to"]:not(.bg-clip-text) {
-  background: linear-gradient(to bottom right, rgb(17 24 39), rgb(31 41 55)) !important;
+  background: linear-gradient(
+    to bottom right,
+    rgb(17 24 39),
+    rgb(31 41 55)
+  ) !important;
 }
 
 /* Ensure Next.js and React specific elements follow theme */
-html.light #__next, html.light [id*="__next"], html.light .next-app {
+html.light #__next,
+html.light [id*="__next"],
+html.light .next-app {
   background-color: rgb(255 255 255) !important;
   color: rgb(0 0 0) !important;
 }
 
-html.dark #__next, html.dark [id*="__next"], html.dark .next-app {
+html.dark #__next,
+html.dark [id*="__next"],
+html.dark .next-app {
   background-color: rgb(3 7 18) !important;
   color: rgb(249 250 251) !important;
 }
@@ -340,7 +370,10 @@ html.light .bg-slate-200 {
 }
 
 /* Ensure fixed/absolute positioned elements inherit theme */
-.fixed, .absolute, [style*="position: fixed"], [style*="position: absolute"] {
+.fixed,
+.absolute,
+[style*="position: fixed"],
+[style*="position: absolute"] {
   color-scheme: inherit;
 }
 
@@ -378,7 +411,10 @@ html.light .border-blue-300 {
 }
 
 /* Force theme inheritance for overlays and modals */
-.fixed.z-40, .fixed.z-50, .absolute.z-40, .absolute.z-50 {
+.fixed.z-40,
+.fixed.z-50,
+.absolute.z-40,
+.absolute.z-50 {
   color-scheme: inherit;
 }
 
@@ -388,32 +424,46 @@ html.light .shadow-sm {
 }
 
 html.light .shadow-md {
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
 }
 
 html.light .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
 }
 
 html.light .shadow-xl {
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
 }
 
-.dark .shadow-black\/10 {
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
+dark .shadow-black\/10 {
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
 }
 
-.dark .shadow-black\/50 {
+dark .shadow-black\/50 {
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5) !important;
 }
 
 /* Super high priority theme overrides to force theme application */
-html.light, html.light body, html.light #__next, html.light [data-reactroot] {
+html.light,
+html.light body,
+html.light #__next,
+html.light [data-reactroot] {
   background-color: rgb(255 255 255) !important;
   color: rgb(0 0 0) !important;
 }
 
-html.dark, html.dark body, html.dark #__next, html.dark [data-reactroot] {
+html.dark,
+html.dark body,
+html.dark #__next,
+html.dark [data-reactroot] {
   background-color: rgb(3 7 18) !important;
   color: rgb(249 250 251) !important;
 }
@@ -782,189 +832,6 @@ html.dark .dark\:hover\:bg-slate-600:hover {
   background-color: rgb(var(--accent)) !important;
 }
 
-/* Enhanced Landing Page Theme Variables */
-:root {
-  --font-sans:
-    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-  /* Light theme colors - Pure white with strong contrast */
-  --background: 255 255 255; /* pure white */
-  --foreground: 0 0 0; /* pure black */
-  --card: 255 255 255; /* pure white */
-  --card-foreground: 0 0 0; /* pure black */
-  --popover: 255 255 255; /* pure white */
-  --popover-foreground: 0 0 0; /* pure black */
-  --primary: 37 99 235; /* blue-600 - darker for better contrast */
-  --primary-foreground: 255 255 255; /* white */
-  --secondary: 248 250 252; /* slate-50 - very light gray */
-  --secondary-foreground: 15 23 42; /* slate-900 - darker text */
-  --muted: 241 245 249; /* slate-100 - light gray */
-  --muted-foreground: 71 85 105; /* slate-600 - medium gray for contrast */
-  --accent: 248 250 252; /* slate-50 */
-  --accent-foreground: 15 23 42; /* slate-900 */
-  --destructive: 220 38 38; /* red-600 - darker red for better contrast */
-  --destructive-foreground: 255 255 255; /* white */
-  --border: 226 232 240; /* slate-200 - light gray border */
-  --input: 226 232 240; /* slate-200 */
-  --ring: 37 99 235; /* blue-600 - matches primary */
-  --radius: 0.5rem;
-
-  /* Landing page specific colors */
-  --landing-primary: 99 102 241; /* indigo-500 */
-  --landing-primary-light: 224 231 255; /* indigo-50 */
-  --landing-primary-dark: 55 48 163; /* indigo-800 */
-  --landing-secondary: 139 92 246; /* violet-500 */
-  --landing-secondary-light: 237 233 254; /* violet-50 */
-  --landing-secondary-dark: 91 33 182; /* violet-800 */
-  --landing-accent: 236 254 255; /* cyan-50 */
-  --landing-accent-dark: 8 51 68; /* cyan-900 */
-
-  /* Card backgrounds for landing */
-  --landing-card-bg: 255 255 255; /* white */
-  --landing-card-secondary: 248 250 252; /* slate-50 */
-  --landing-card-accent: 239 246 255; /* blue-50 */
-  --landing-card-purple: 250 245 255; /* purple-50 */
-}
-
-.dark {
-  /* Dark theme colors */
-  --background: 3 7 18; /* gray-950 */
-  --foreground: 249 250 251; /* gray-50 */
-  --card: 17 24 39; /* gray-900 */
-  --card-foreground: 249 250 251; /* gray-50 */
-  --popover: 17 24 39; /* gray-900 */
-  --popover-foreground: 249 250 251; /* gray-50 */
-  --primary: 147 197 253; /* blue-300 */
-  --primary-foreground: 3 7 18; /* gray-950 */
-  --secondary: 31 41 55; /* gray-800 */
-  --secondary-foreground: 249 250 251; /* gray-50 */
-  --muted: 31 41 55; /* gray-800 */
-  --muted-foreground: 156 163 175; /* gray-400 */
-  --accent: 31 41 55; /* gray-800 */
-  --accent-foreground: 249 250 251; /* gray-50 */
-  --destructive: 248 113 113; /* red-400 */
-  --destructive-foreground: 249 250 251; /* gray-50 */
-  --border: 55 65 81; /* gray-700 */
-  --input: 55 65 81; /* gray-700 */
-  --ring: 147 197 253; /* blue-300 */
-
-  /* Landing page dark mode colors */
-  --landing-primary: 129 140 248; /* indigo-400 */
-  --landing-primary-light: 30 27 75; /* indigo-950 */
-  --landing-primary-dark: 165 180 252; /* indigo-300 */
-  --landing-secondary: 167 139 250; /* violet-400 */
-  --landing-secondary-light: 46 16 101; /* violet-950 */
-  --landing-secondary-dark: 196 181 253; /* violet-300 */
-  --landing-accent: 6 182 212; /* cyan-500 */
-  --landing-accent-dark: 164 202 254; /* blue-300 */
-
-  /* Card backgrounds for landing dark mode */
-  --landing-card-bg: 30 41 59; /* slate-800 */
-  --landing-card-secondary: 51 65 85; /* slate-700 */
-  --landing-card-accent: 30 58 138; /* blue-900 */
-  --landing-card-purple: 76 29 149; /* purple-900 */
-}
-
-/* Landing page component styles */
-.landing-card {
-  background-color: rgb(var(--landing-card-bg));
-  border: 1px solid rgb(var(--border));
-  color: rgb(var(--foreground));
-  transition: all 0.2s ease;
-}
-
-.landing-card-primary {
-  background-color: rgb(var(--landing-card-accent));
-  border-color: rgb(var(--landing-primary) / 0.3);
-  color: rgb(var(--foreground));
-}
-
-.landing-card-secondary {
-  background-color: rgb(var(--landing-card-purple));
-  border-color: rgb(var(--landing-secondary) / 0.3);
-  color: rgb(var(--foreground));
-}
-
-.landing-card-accent {
-  background-color: rgb(var(--landing-card-secondary));
-  border-color: rgb(var(--landing-accent) / 0.3);
-  color: rgb(var(--foreground));
-}
-
-.landing-icon-bg {
-  background-color: rgb(var(--landing-primary-light));
-}
-
-.landing-icon {
-  color: rgb(var(--landing-primary));
-}
-
-/* Light mode: Use light blue background with dark text to match page theme */
-html.light .landing-button-primary {
-  background-color: rgb(239 246 255) !important; /* blue-50 - light blue background */
-  color: rgb(30 64 175) !important; /* blue-800 - dark blue text */
-  border: 2px solid rgb(147 197 253) !important; /* blue-300 border */
-  cursor: pointer;
-}
-
-/* Dark mode: Keep the original design */
-html.dark .landing-button-primary {
-  background-color: rgb(var(--landing-primary));
-  color: white !important;
-  border: none;
-  cursor: pointer;
-}
-
-.landing-button-primary:hover {
-  background-color: rgb(var(--landing-primary-dark));
-}
-
-/* Light mode hover state */
-html.light .landing-button-primary:hover {
-  background-color: rgb(219 234 254) !important; /* blue-100 */
-  border-color: rgb(96 165 250) !important; /* blue-400 */
-  color: rgb(30 58 138) !important; /* blue-900 */
-}
-
-/* Dark mode hover state */
-html.dark .landing-button-primary:hover {
-  background-color: rgb(var(--landing-primary-dark)) !important;
-}
-
-.landing-button-secondary {
-  background-color: transparent;
-  color: rgb(var(--foreground));
-  border: 2px solid rgb(var(--border));
-  cursor: pointer;
-}
-
-.landing-button-secondary:hover {
-  border-color: rgb(var(--landing-primary));
-  color: rgb(var(--landing-primary));
-}
-
-.landing-text-primary {
-  color: rgb(var(--foreground));
-}
-
-.landing-text-secondary {
-  color: rgb(var(--muted-foreground));
-}
-
-/* Force black text in landing page colored cards for light mode */
-html.light .landing-card-primary .landing-text-primary,
-html.light .landing-card-secondary .landing-text-primary,
-html.light .landing-card-accent .landing-text-primary {
-  color: rgb(0 0 0) !important;
-}
-
-html.light .landing-card-primary .landing-text-secondary,
-html.light .landing-card-secondary .landing-text-secondary,
-html.light .landing-card-accent .landing-text-secondary {
-  color: rgb(55 65 81) !important; /* gray-700 for better readability */
-}
-
 /* Ensure icon colors work well in colored cards */
 html.light .landing-card-primary .landing-icon,
 html.light .landing-card-secondary .landing-icon,
@@ -972,13 +839,385 @@ html.light .landing-card-accent .landing-icon {
   color: rgb(var(--landing-primary-dark)) !important;
 }
 
-/* Enhanced feature preview card styling */
-.landing-feature-preview {
-  background: linear-gradient(135deg, rgb(var(--landing-card-accent)), rgb(var(--landing-card-purple)));
-  border: 1px solid rgb(var(--landing-primary) / 0.2);
+/* ===== CONVERSATION ANALYSIS STYLES ===== */
+.conversation-analysis {
+  background: linear-gradient(
+    135deg,
+    rgb(var(--card)) 0%,
+    rgb(var(--secondary)) 100%
+  );
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  border: 1px solid rgb(var(--border));
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 }
 
-html.dark .landing-feature-preview {
-  background: linear-gradient(135deg, rgb(var(--landing-card-bg)), rgb(var(--landing-card-secondary)));
-  border: 1px solid rgb(var(--landing-primary) / 0.3);
+.conversation-analysis::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 }
+
+.conversation-analysis h2 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.conversation-analysis h2::before {
+  content: "🎯";
+  font-size: 1.5rem;
+}
+
+.analysis-section {
+  background: rgb(var(--card));
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid;
+  position: relative;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.analysis-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-section h3 {
+  color: rgb(var(--foreground));
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.transcription-section {
+  border-left-color: #3b82f6;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--card)) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
+}
+
+.transcription-section h3::before {
+  content: "📝";
+}
+
+.tone-section {
+  border-left-color: #10b981;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--card)) 0%,
+    rgba(16, 185, 129, 0.05) 100%
+  );
+}
+
+.tone-section h3::before {
+  content: "🎭";
+}
+
+.feedback-section {
+  border-left-color: #f59e0b;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--card)) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
+}
+
+.feedback-section h3::before {
+  content: "💡";
+}
+
+.alternatives-section {
+  border-left-color: #8b5cf6;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--card)) 0%,
+    rgba(139, 92, 246, 0.05) 100%
+  );
+}
+
+.alternatives-section h3::before {
+  content: "🔄";
+}
+
+.summary-section {
+  border-left-color: #ef4444;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--card)) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
+}
+
+.summary-section h3::before {
+  content: "📊";
+}
+
+.participant-message {
+  background: rgb(var(--muted));
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border-left: 3px solid #3b82f6;
+  position: relative;
+}
+
+.participant-label {
+  font-weight: 600;
+  color: #3b82f6;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.participant-label::before {
+  content: "👤";
+  font-size: 0.8rem;
+}
+
+.participant-text {
+  color: rgb(var(--foreground));
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.tone-analysis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.tone-card {
+  background: rgb(var(--muted));
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid rgb(var(--border));
+  transition: transform 0.2s ease;
+}
+
+.tone-card:hover {
+  transform: scale(1.02);
+}
+
+.tone-label {
+  font-weight: 600;
+  color: rgb(var(--muted-foreground));
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.tone-description {
+  color: rgb(var(--foreground));
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.suggestion-item {
+  background: rgb(var(--muted));
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border-left: 3px solid #10b981;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.suggestion-item:hover {
+  transform: translateX(4px);
+}
+
+.suggestion-item::before {
+  content: "💬";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgb(var(--card));
+  padding: 0.25rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.suggestion-label {
+  font-weight: 600;
+  color: #10b981;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.suggestion-text {
+  color: rgb(var(--foreground));
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.analysis-highlight {
+  background: linear-gradient(
+    120deg,
+    rgba(255, 215, 0, 0.3) 0%,
+    rgba(255, 215, 0, 0.1) 100%
+  );
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.key-insight {
+  background: rgb(var(--primary) / 0.1);
+  border: 1px solid rgb(var(--primary) / 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.key-insight::before {
+  content: "🔑";
+  position: absolute;
+  top: -8px;
+  left: 1rem;
+  background: rgb(var(--card));
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.analysis-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgb(var(--border));
+  color: rgb(var(--muted-foreground));
+  font-size: 0.9rem;
+}
+
+.analysis-footer::before {
+  content: "✨";
+  margin-right: 0.5rem;
+}
+
+/* Dark mode adjustments */
+.dark .conversation-analysis {
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .analysis-section:hover {
+  box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .conversation-analysis {
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .analysis-section {
+    padding: 1rem;
+  }
+
+  .tone-analysis {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Additional styles for conversation analysis content */
+.conversation-analysis .prose {
+  color: rgb(var(--foreground));
+  max-width: none;
+}
+
+.conversation-analysis .prose h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.conversation-analysis .prose h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.conversation-analysis .prose p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.conversation-analysis .prose ul {
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.conversation-analysis .prose li {
+  margin: 0.75rem 0;
+}
+
+.conversation-analysis .prose blockquote {
+  border-left: 4px solid rgb(var(--primary));
+  background: rgb(var(--muted));
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.conversation-analysis .prose code {
+  background: rgb(var(--muted));
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family:
+    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
+    monospace;
+}
+
+.conversation-analysis .prose pre {
+  background: rgb(var(--muted));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+/* Note: Section-specific colors are handled by the React component 
+   using specific CSS classes for each analysis section type */

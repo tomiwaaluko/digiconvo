@@ -8,6 +8,7 @@ import { z } from "zod";
 import { GoogleGenAI } from "@google/genai";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { env } from "~/env";
 
 const emotionColors: { [key: string]: string } = {
   Happy: "#10B981",
@@ -21,7 +22,7 @@ const emotionColors: { [key: string]: string } = {
   Neutral: "#9CA3AF",
 };
 
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
 export const geminiRouter = createTRPCRouter({
   imageAnalyze: publicProcedure
