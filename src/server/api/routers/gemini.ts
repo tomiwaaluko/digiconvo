@@ -168,6 +168,8 @@ export const geminiRouter = createTRPCRouter({
             name: z.string(),
             personality: z.string(),
             emotionalTendency: z.string(),
+            gender: z.enum(['MALE', 'FEMALE', 'NEUTRAL']),
+            voiceName: z.string(),
           }),
           description: z.string(),
         }),
@@ -175,8 +177,10 @@ export const geminiRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const { messages, scenario } = input;
+      const chatModelName = "gemini-1.5-flash";
+      const ttsModelName = "gemini-2.5-flash-preview-tts";
 
-      const prompt = `
+      const conversationPrompt = `
         You are a conversational practice partner. Your name is ${scenario.persona.name}.
         Your personality is: "${scenario.persona.personality}".
         Your emotional tendency is: "${scenario.persona.emotionalTendency}".
@@ -192,23 +196,79 @@ export const geminiRouter = createTRPCRouter({
       `;
 
       try {
-        const result = await ai.models.generateContent({
-          model: "gemini-1.5-flash", 
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
+        const textResult = await ai.models.generateContent({
+          model: chatModelName,
+          contents: [{ role: 'user', parts: [{ text: conversationPrompt }] }],
         });
 
-        const responseText = result.text;
-
-        if (!responseText) {
-          throw new Error("AI did not return a reply.");
+        const replyText = textResult?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!replyText) {
+          throw new Error("AI failed to generate a text reply.");
         }
 
+        const audioGenerationResult = await ai.models.generateContent({
+            model: ttsModelName,
+            // The contents are now just a simple instruction with the text we generated
+            contents: [{
+                parts: [{ text: `[speaker: ${scenario.persona.name}] ${replyText}` }]
+            }],
+            config: {
+                // As the error message dictated, we ONLY request AUDIO
+                responseModalities: ['AUDIO'],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName: scenario.persona.voiceName }
+                    }
+                }
+            },
+        });
+
+        // --- STEP 3: PARSE THE AUDIO-ONLY RESPONSE CORRECTLY ---
+        // As per your new code snippet, the data is in `inlineData.data`
+        const audioPart = audioGenerationResult?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+        const audioContent = audioGenerationResult?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+        const audioMimeType = audioPart?.mimeType;
+        
+        console.log("DETECTED AUDIO MIME TYPE:", audioMimeType);
+
+        if (!audioContent) {
+          throw new Error("AI failed to generate audio for the reply.");
+        }
+        
+        // --- STEP 4: RETURN BOTH RESULTS ---
         return {
-          reply: responseText,
+          reply: replyText,
+          audioContent: audioContent,
+          mimeType: audioMimeType,
         };
+
+
       } catch (error) {
-        console.error("Error getting AI reply:", error);
-        throw new Error("Failed to get a reply from the AI model.");
+        console.error("Error in getAiReply two-step process:", error);
+        throw new Error("Failed to get a complete response from the AI model.");
+        
       }
+
+      
+
+      // try {
+      //   const result = await ai.models.generateContent({
+      //     model: "gemini-1.5-flash", 
+      //     contents: [{ role: "user", parts: [{ text: prompt }] }],
+      //   });
+
+      //   const responseText = result.text;
+
+      //   if (!responseText) {
+      //     throw new Error("AI did not return a reply.");
+      //   }
+
+      //   return {
+      //     reply: responseText,
+      //   };
+      // } catch (error) {
+      //   console.error("Error getting AI reply:", error);
+      //   throw new Error("Failed to get a reply from the AI model.");
+      // }
     }),
 });
