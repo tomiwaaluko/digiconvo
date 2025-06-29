@@ -87,7 +87,7 @@ DigiConvo is a modern web application that uses Google Gemini AI to provide real
 
 ---
 
-## 📖 Usage
+## Usage
 
 ### Getting Started
 
