@@ -255,24 +255,6 @@ export const geminiRouter = createTRPCRouter({
         throw new Error("Failed to get a complete response from the AI model.");
       }
 
-      // try {
-      //   const result = await ai.models.generateContent({
-      //     model: "gemini-1.5-flash",
-      //     contents: [{ role: "user", parts: [{ text: prompt }] }],
-      //   });
-
-      //   const responseText = result.text;
-
-      //   if (!responseText) {
-      //     throw new Error("AI did not return a reply.");
-      //   }
-
-      //   return {
-      //     reply: responseText,
-      //   };
-      // } catch (error) {
-      //   console.error("Error getting AI reply:", error);
-      //   throw new Error("Failed to get a reply from the AI model.");
-      // }
+      
     }),
 });

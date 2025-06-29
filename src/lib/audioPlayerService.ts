@@ -68,16 +68,13 @@ class AudioPlayerService {
   private currentObjectUrl: string | null = null;
 
   async play(base64Audio: string, mimeType: string, onEnd: () => void) {
+    console.log(`AudioPlayerService: Received audio data. MimeType: ${mimeType}`);
+
+    // Stop any previous audio and clean up its resources before starting anew.
     this.stop();
     
-    // --- FIX #3 HERE ---
-    // A more robust way to parse the sample rate.
-    let sampleRate = 24000; // Default sample rate
     const sampleRateMatch = mimeType.match(/rate=(\d+)/);
-    // Check if the match and the captured group [1] exist before parsing.
-    if (sampleRateMatch && sampleRateMatch[1]) {
-      sampleRate = parseInt(sampleRateMatch[1], 10);
-    }
+    const sampleRate = sampleRateMatch && sampleRateMatch[1] ? parseInt(sampleRateMatch[1], 10) : 24000;
 
     const pcmData = base64ToPcm(base64Audio);
     const wavBlob = pcmToWav(pcmData, sampleRate);
@@ -85,25 +82,35 @@ class AudioPlayerService {
     
     this.audio = new Audio(this.currentObjectUrl);
     
-    this.audio.onended = () => {
-        onEnd();
-        this.stop();
+    // Define a single cleanup function to be called on end or error.
+    const cleanup = () => {
+      onEnd(); // First, notify our app state that playback is over.
+      this.stop(); // Then, run the full cleanup logic.
     };
+
+    this.audio.onended = cleanup;
     this.audio.onerror = (e) => {
       console.error("Audio playback error event:", e);
-      onEnd();
-      this.stop();
+      cleanup(); // Also run cleanup on error.
     };
     
     try {
       await this.audio.play();
+      console.log("AudioPlayerService: Playback started successfully.");
     } catch (error) {
-      onEnd();
+      console.error("AudioPlayerService: Error starting playback.", error);
+      cleanup();
     }
   }
 
   stop() {
     if (this.audio) {
+      // --- THIS IS THE KEY FIX ---
+      // 1. Remove the event listeners so they can't fire again during cleanup.
+      this.audio.onended = null;
+      this.audio.onerror = null;
+
+      // 2. Now, it's safe to pause and detach the source without triggering the error.
       this.audio.pause();
       this.audio.src = '';
       this.audio = null;

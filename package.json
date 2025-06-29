@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@google/genai": "^1.7.0",
-    "@hookform/resolvers": "^5.1.1",
     "@google/generative-ai": "^0.24.1",
+    "@hookform/resolvers": "^5.1.1",
     "@prisma/client": "^6.5.0",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
@@ -50,6 +50,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.0.15",
+    "@types/dom-speech-recognition": "^0.0.6",
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
