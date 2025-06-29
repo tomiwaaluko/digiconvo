@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Conversation Analysis - Preview</title>
+    <style>
+      :root {
+        --card: 255 255 255;
+        --secondary: 248 250 252;
+        --border: 226 232 240;
+        --foreground: 15 23 42;
+        --muted: 248 250 252;
+        --muted-foreground: 100 116 139;
+        --primary: 99 102 241;
+      }
+
+      .dark {
+        --card: 15 23 42;
+        --secondary: 30 41 59;
+        --border: 51 65 85;
+        --foreground: 248 250 252;
+        --muted: 30 41 59;
+        --muted-foreground: 148 163 184;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background: rgb(var(--secondary));
+        color: rgb(var(--foreground));
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      /* Conversation Analysis Styles */
+      .conversation-analysis {
+        background: linear-gradient(
+          135deg,
+          rgb(var(--card)) 0%,
+          rgb(var(--secondary)) 100%
+        );
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 1.5rem 0;
+        border: 1px solid rgb(var(--border));
+        box-shadow:
+          0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .conversation-analysis::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+      }
+
+      .conversation-analysis h2 {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .conversation-analysis h2::before {
+        content: "🎯";
+        font-size: 1.5rem;
+      }
+
+      .analysis-section {
+        background: rgb(var(--card));
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-left: 4px solid;
+        position: relative;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .analysis-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      .analysis-section h3 {
+        color: rgb(var(--foreground));
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .transcription-section {
+        border-left-color: #3b82f6;
+        background: linear-gradient(
+          135deg,
+          rgb(var(--card)) 0%,
+          rgba(59, 130, 246, 0.05) 100%
+        );
+      }
+
+      .transcription-section h3::before {
+        content: "📝";
+      }
+
+      .tone-section {
+        border-left-color: #10b981;
+        background: linear-gradient(
+          135deg,
+          rgb(var(--card)) 0%,
+          rgba(16, 185, 129, 0.05) 100%
+        );
+      }
+
+      .tone-section h3::before {
+        content: "🎭";
+      }
+
+      .feedback-section {
+        border-left-color: #f59e0b;
+        background: linear-gradient(
+          135deg,
+          rgb(var(--card)) 0%,
+          rgba(245, 158, 11, 0.05) 100%
+        );
+      }
+
+      .feedback-section h3::before {
+        content: "💡";
+      }
+
+      .alternatives-section {
+        border-left-color: #8b5cf6;
+        background: linear-gradient(
+          135deg,
+          rgb(var(--card)) 0%,
+          rgba(139, 92, 246, 0.05) 100%
+        );
+      }
+
+      .alternatives-section h3::before {
+        content: "🔄";
+      }
+
+      .participant-message {
+        background: rgb(var(--muted));
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.75rem 0;
+        border-left: 3px solid #3b82f6;
+        position: relative;
+      }
+
+      .participant-label {
+        font-weight: 600;
+        color: #3b82f6;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .participant-label::before {
+        content: "👤";
+        font-size: 0.8rem;
+      }
+
+      .participant-text {
+        color: rgb(var(--foreground));
+        line-height: 1.6;
+        font-style: italic;
+      }
+
+      .suggestion-item {
+        background: rgb(var(--muted));
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.75rem 0;
+        border-left: 3px solid #10b981;
+        position: relative;
+        transition: transform 0.2s ease;
+      }
+
+      .suggestion-item:hover {
+        transform: translateX(4px);
+      }
+
+      .suggestion-item::before {
+        content: "💬";
+        position: absolute;
+        left: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgb(var(--card));
+        padding: 0.25rem;
+        border-radius: 50%;
+        font-size: 0.8rem;
+      }
+
+      .analysis-highlight {
+        background: linear-gradient(
+          120deg,
+          rgba(255, 215, 0, 0.3) 0%,
+          rgba(255, 215, 0, 0.1) 100%
+        );
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      .analysis-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgb(var(--border));
+        color: rgb(var(--muted-foreground));
+        font-size: 0.9rem;
+      }
+
+      .analysis-footer::before {
+        content: "✨";
+        margin-right: 0.5rem;
+      }
+
+      .toggle-dark {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background: rgb(var(--primary));
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="toggle-dark" onclick="toggleDark()">
+      🌙 Toggle Dark Mode
+    </button>
+
+    <div class="container">
+      <h1 style="text-align: center; margin-bottom: 2rem">
+        Enhanced Conversation Analysis Preview
+      </h1>
+
+      <div class="conversation-analysis">
+        <h2>Communication Analysis</h2>
+
+        <div class="analysis-section transcription-section">
+          <h3>Conversation Transcription</h3>
+          <div class="participant-message">
+            <div class="participant-label">Person A</div>
+            <div class="participant-text">
+              Hey, I know you're going through a tough time right now. I just
+              wanted to check in and see how you're doing.
+            </div>
+          </div>
+          <div class="participant-message">
+            <div class="participant-label">Person B</div>
+            <div class="participant-text">
+              Thanks for reaching out. I'm struggling a bit, but I appreciate
+              you thinking of me.
+            </div>
+          </div>
+          <div class="participant-message">
+            <div class="participant-label">Person A</div>
+            <div class="participant-text">
+              Is there anything I can do to help? I'm here for you.
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-section tone-section">
+          <h3>Tone Analysis</h3>
+          <p>
+            The overall tone of this conversation is
+            <span class="analysis-highlight">supportive and empathetic</span>.
+            Person A demonstrates genuine concern and offers help, while Person
+            B shows appreciation despite their difficult situation.
+          </p>
+          <p>
+            <strong>Person A's tone:</strong> Caring, supportive, and proactive
+            in offering assistance.
+          </p>
+          <p>
+            <strong>Person B's tone:</strong> Vulnerable but appreciative,
+            showing openness to support.
+          </p>
+        </div>
+
+        <div class="analysis-section feedback-section">
+          <h3>Constructive Feedback</h3>
+          <p>
+            This conversation demonstrates excellent empathetic communication.
+            Both participants show emotional intelligence and mutual respect.
+          </p>
+          <p><strong>Strengths identified:</strong></p>
+          <ul>
+            <li>Person A checks in without being intrusive</li>
+            <li>Offers specific help rather than vague support</li>
+            <li>Person B expresses gratitude and maintains honesty</li>
+          </ul>
+        </div>
+
+        <div class="analysis-section alternatives-section">
+          <h3>Suggested Alternatives</h3>
+          <div class="suggestion-item">
+            <div class="suggestion-text">
+              <strong>Original:</strong> "Is there anything I can do to
+              help?"<br />
+              <strong>Alternative:</strong> "Would you like me to bring you
+              dinner this week, or would you prefer to talk on the phone?"
+            </div>
+          </div>
+          <div class="suggestion-item">
+            <div class="suggestion-text">
+              <strong>Enhancement:</strong> Person A could follow up with
+              specific, actionable offers to make it easier for Person B to
+              accept help.
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-footer">
+          Analysis completed with AI-powered insights for better communication
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleDark() {
+        document.body.classList.toggle("dark");
+      }
+    </script>
+  </body>
+</html>
