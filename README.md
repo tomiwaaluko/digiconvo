@@ -1,6 +1,4 @@
-# DigiConvo 🎤🔊
-
-**An AI-powered conversation practice platform for developing emotional intelligence and communication skills**
+# DigiConvo 🗣️
 
 **An AI-powered conversation practice platform for developing emotional intelligence and communication skills**
 
@@ -8,7 +6,7 @@ DigiConvo is a modern web application that uses Google Gemini AI to provide real
 
 ---
 
-## 🌟 Features
+## Features
 
 ### Core Functionality
 
@@ -28,7 +26,7 @@ DigiConvo is a modern web application that uses Google Gemini AI to provide real
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 
@@ -123,7 +121,7 @@ DigiConvo is a modern web application that uses Google Gemini AI to provide real
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -147,7 +145,7 @@ DATABASE_URL="postgresql://..."                # Optional for session persistenc
 
 ---
 
-## 🛠️ Dependencies
+## Dependencies
 
 ### Core Technologies
 
@@ -176,7 +174,7 @@ DATABASE_URL="postgresql://..."                # Optional for session persistenc
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 digiconvo/
@@ -205,7 +203,7 @@ digiconvo/
 
 ---
 
-## 💻 Technologies Used
+## Technologies Used
 
 ### Frontend Stack
 
@@ -229,7 +227,7 @@ digiconvo/
 
 ---
 
-## 👥 Intended Audience
+## Intended Audience
 
 ### Primary Users
 
@@ -248,7 +246,7 @@ digiconvo/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions to make DigiConvo even better! Here's how you can help:
 
@@ -285,21 +283,21 @@ npm run build         # Test production build
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ### What this means:
 
-- ✅ **Commercial use** - Use in commercial projects
-- ✅ **Modification** - Modify and adapt the code
-- ✅ **Distribution** - Share and distribute freely
-- ✅ **Private use** - Use in private projects
-- ⚠️ **License and copyright notice** - Include original license in distributions
+- **Commercial use** - Use in commercial projects
+- **Modification** - Modify and adapt the code
+- **Distribution** - Share and distribute freely
+- **Private use** - Use in private projects
+- **License and copyright notice** - Include original license in distributions
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Google Gemini AI** for providing advanced language models and emotion analysis
 - **T3 Stack** for the excellent Next.js, TypeScript, and tRPC foundation
@@ -308,7 +306,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 - **GitHub Issues**: Report bugs and request features
 - **Documentation**: Check the [FRONTEND_README.md](FRONTEND_README.md) for detailed UI implementation notes
@@ -316,4 +314,4 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
-**Built with ❤️ using Next.js, TypeScript, Tailwind CSS, and Google Gemini AI**
+**Built using Next.js, TypeScript, Tailwind CSS, and Google Gemini AI**
