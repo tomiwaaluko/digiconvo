@@ -19,21 +19,6 @@ import {
 import { api } from "~/trpc/react";
 
 export function ChatInterface() {
-  // GitHub Copilot Prompt:
-  // On this `/chat` page, I need help with layout alignment and spacing consistency.
-  // 1. At the **bottom of the page**, the text input bar and its buttons (e.g., mic and send) should be **perfectly vertically centered** and aligned horizontally within the same row. Currently, they appear slightly misaligned or uneven.
-  // 2. Ensure there is **consistent padding and margin** between the input field and its surrounding components (like the borders and button containers).
-  // 3. At the **top of the page**, inside the navbar/header, the spacing between the buttons (e.g., theme toggle, profile, analysis toggle) is inconsistent. Please apply **uniform spacing** (like `gap-x-4` or equivalent) between them.
-  // 4. Use Tailwind utility classes (e.g., `flex`, `items-center`, `gap-*`, `justify-between`, `p-*`, `mb-*`, `h-full`, etc.) to fix these issues where appropriate.
-  // The goal is to create clean visual symmetry and even padding/margins between interactive components on both the top and bottom of the chat interface.
-  
-  // FIXES APPLIED:
-  // ✅ Header: Changed from `flex items-center mx-4` to `flex items-center gap-4` for uniform button spacing
-  // ✅ Input Area: Changed from `items-end space-x-4` to `items-center gap-3` for perfect vertical alignment
-  // ✅ Input Area: Reduced padding from `p-6` to `p-4` for better proportion
-  // ✅ Buttons: Added fixed height (`h-11 w-11`) and `flex items-center justify-center` for consistent sizing
-  // ✅ Buttons: Changed from `space-x-2` to `gap-2` for modern gap-based spacing
-  
   const [inputMessage, setInputMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
