@@ -103,6 +103,9 @@ export function ChatInterface() {
   };
 
   const handleSendMessage = async () => {
+    if(isListening) {
+      stopListening();
+    }
     if (!inputMessage.trim() || !currentScenario) return;
 
     const userMessageContent = inputMessage;
