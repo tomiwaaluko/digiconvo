@@ -25,7 +25,10 @@ const mockScenarios: Scenario[] = [
     persona: {
       name: 'Alex',
       personality: 'Emotional and defensive',
-      emotionalTendency: 'Becomes upset easily, seeks reassurance'
+      emotionalTendency: 'Becomes upset easily, seeks reassurance',
+      gender: 'MALE',
+      voiceName: 'Kore', 
+
     }
   },
   {
@@ -37,7 +40,9 @@ const mockScenarios: Scenario[] = [
     persona: {
       name: 'Jordan',
       personality: 'Professional but sensitive',
-      emotionalTendency: 'Takes criticism personally, needs encouragement'
+      emotionalTendency: 'Takes criticism personally, needs encouragement',
+      gender: 'MALE',
+      voiceName: 'Gacrux',
     }
   },
   {
@@ -49,7 +54,9 @@ const mockScenarios: Scenario[] = [
     persona: {
       name: 'Sam',
       personality: 'Stubborn but caring',
-      emotionalTendency: 'Defensive initially, becomes understanding over time'
+      emotionalTendency: 'Defensive initially, becomes understanding over time',
+      gender: 'MALE',
+      voiceName: 'Rasalgethi',
     }
   },
   {
@@ -61,7 +68,9 @@ const mockScenarios: Scenario[] = [
     persona: {
       name: 'Casey',
       personality: 'Traditional and protective',
-      emotionalTendency: 'Values family harmony, fears change'
+      emotionalTendency: 'Values family harmony, fears change',
+      gender: 'FEMALE',
+      voiceName: 'Sadaltager',
     }
   },
   {
@@ -73,7 +82,9 @@ const mockScenarios: Scenario[] = [
     persona: {
       name: 'Taylor',
       personality: 'Analytical but frustrated',
-      emotionalTendency: 'Wants logical solutions, struggles with interpersonal dynamics'
+      emotionalTendency: 'Wants logical solutions, struggles with interpersonal dynamics',
+      gender: 'FEMALE',
+      voiceName: 'Alnilam',
     }
   },
   {
@@ -85,7 +96,9 @@ const mockScenarios: Scenario[] = [
     persona: {
       name: 'Morgan',
       personality: 'Demanding but reasonable',
-      emotionalTendency: 'Initially frustrated, responds well to acknowledgment'
+      emotionalTendency: 'Initially frustrated, responds well to acknowledgment',
+      gender: 'FEMALE',
+      voiceName: 'Iapetus',
     }
   }
 ];

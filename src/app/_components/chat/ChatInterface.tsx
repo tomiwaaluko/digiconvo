@@ -9,7 +9,12 @@ import { TypingIndicator } from "~/app/_components/chat/TypingIndicator";
 import { WelcomeScreen } from "../welcome/WelcomeScreen";
 import { SessionControls } from "../controls/SessionControls";
 import { ThemeToggle } from "../theme/ThemeToggle";
-import { themeClasses, cx, composeButton, composeInput } from "~/lib/theme-classes";
+import {
+  themeClasses,
+  cx,
+  composeButton,
+  composeInput,
+} from "~/lib/theme-classes";
 
 import { api } from "~/trpc/react";
 
@@ -27,6 +32,7 @@ export function ChatInterface() {
     toggleEmotionPanel,
     showEmotionPanel,
     setCurrentEmotion,
+    playAiAudio,
   } = useChatStore();
 
   const analyzeTone = api.gemini.toneAnalysis.useMutation({
@@ -51,19 +57,22 @@ export function ChatInterface() {
     onSuccess: (data) => {
       addMessage({
         content: data.reply,
-        sender: 'ai',
+        sender: "ai",
       });
+      if (data.audioContent && data.mimeType) {
+        playAiAudio(data.audioContent, data.mimeType);
+      }
       setIsTyping(false);
     },
     onError: (error) => {
       console.error("AI reply failed:", error);
       addMessage({
         content: "Sorry, I encountered an error. Please try again.",
-        sender: 'ai',
+        sender: "ai",
       });
       setIsTyping(false);
     },
-  })
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,10 +114,12 @@ export function ChatInterface() {
     setIsTyping(true);
 
     getReply.mutate({
-      messages: [...currentMessages, {sender: 'user', content: userMessageContent}],
+      messages: [
+        ...currentMessages,
+        { sender: "user", content: userMessageContent },
+      ],
       scenario: currentScenario,
     });
-
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -123,43 +134,78 @@ export function ChatInterface() {
     // TODO: Implement Whisper STT integration
   };
   return (
-    <div className={cx(themeClasses.layout.container, themeClasses.layout.fullHeight, themeClasses.background)}>
+    <div
+      className={cx(
+        themeClasses.layout.container,
+        themeClasses.layout.fullHeight,
+        themeClasses.background,
+      )}
+    >
       {/* Header */}
-      <div className={cx('border-b', themeClasses.backgroundSecondary, themeClasses.spacing.px6, themeClasses.spacing.py4)}>
+      <div
+        className={cx(
+          "border-b",
+          themeClasses.backgroundSecondary,
+          themeClasses.spacing.px6,
+          themeClasses.spacing.py4,
+        )}
+      >
         <div className={themeClasses.layout.spaceBetween}>
           <div>
             {currentScenario ? (
               <div>
-                <h1 className={cx(themeClasses.typography.xl, themeClasses.typography.semibold, themeClasses.textPrimary)}>
+                <h1
+                  className={cx(
+                    themeClasses.typography.xl,
+                    themeClasses.typography.semibold,
+                    themeClasses.textPrimary,
+                  )}
+                >
                   {currentScenario.title}
                 </h1>
-                <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
+                <p
+                  className={cx(
+                    themeClasses.typography.sm,
+                    themeClasses.textSecondary,
+                  )}
+                >
                   Practicing with {currentScenario.persona.name} •{" "}
                   {currentScenario.difficulty}
                 </p>
               </div>
             ) : (
               <div>
-                <h1 className={cx(themeClasses.typography.xl, themeClasses.typography.semibold, themeClasses.textPrimary)}>
+                <h1
+                  className={cx(
+                    themeClasses.typography.xl,
+                    themeClasses.typography.semibold,
+                    themeClasses.textPrimary,
+                  )}
+                >
                   DigiConvo
                 </h1>
-                <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
+                <p
+                  className={cx(
+                    themeClasses.typography.sm,
+                    themeClasses.textSecondary,
+                  )}
+                >
                   Choose a scenario to start practicing conversations
                 </p>
               </div>
             )}
           </div>
 
-          <div className={cx('flex items-center', themeClasses.spacing.mx4)}>
+          <div className={cx("flex items-center", themeClasses.spacing.mx4)}>
             <ThemeToggle />
             <SessionControls />
             <button
               onClick={toggleEmotionPanel}
               className={cx(
-                'rounded-lg p-2 transition-colors',
+                "rounded-lg p-2 transition-colors",
                 showEmotionPanel
-                  ? 'bg-blue-100 text-blue-600'
-                  : themeClasses.buttonSecondary
+                  ? "bg-blue-100 text-blue-600"
+                  : themeClasses.buttonSecondary,
               )}
             >
               <BarChart3 className="h-5 w-5" />
@@ -228,7 +274,13 @@ export function ChatInterface() {
       </div>
 
       {/* Input Area */}
-      <div className={cx('border-t', themeClasses.backgroundSecondary, themeClasses.spacing.p6)}>
+      <div
+        className={cx(
+          "border-t",
+          themeClasses.backgroundSecondary,
+          themeClasses.spacing.p6,
+        )}
+      >
         <div className="flex items-end space-x-4">
           <div className="flex-1">
             <textarea
@@ -241,7 +293,7 @@ export function ChatInterface() {
                   : "Select a scenario to start chatting..."
               }
               disabled={!currentScenario}
-              className={cx(composeInput(), 'disabled:opacity-50')}
+              className={cx(composeInput(), "disabled:opacity-50")}
               rows={1}
               style={{ minHeight: "44px", maxHeight: "120px" }}
             />
@@ -253,10 +305,10 @@ export function ChatInterface() {
               whileTap={{ scale: 0.95 }}
               onClick={toggleRecording}
               className={cx(
-                'rounded-lg p-3 transition-colors',
+                "rounded-lg p-3 transition-colors",
                 isRecording
-                  ? 'bg-red-500 text-white'
-                  : themeClasses.buttonSecondary
+                  ? "bg-red-500 text-white"
+                  : themeClasses.buttonSecondary,
               )}
               disabled={!currentScenario}
             >
@@ -272,7 +324,10 @@ export function ChatInterface() {
               whileTap={{ scale: 0.95 }}
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || !currentScenario || isTyping}
-              className={cx(composeButton('primary'), 'disabled:cursor-not-allowed disabled:opacity-50')}
+              className={cx(
+                composeButton("primary"),
+                "disabled:cursor-not-allowed disabled:opacity-50",
+              )}
             >
               <Send className="h-5 w-5" />
             </motion.button>
