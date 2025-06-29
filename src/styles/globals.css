@@ -648,6 +648,7 @@ html.dark .focus\:ring-blue-500:focus {
   border: 1px solid rgb(var(--border));
   border-radius: var(--radius);
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .theme-button:hover {
@@ -658,6 +659,7 @@ html.dark .focus\:ring-blue-500:focus {
   background-color: rgb(var(--secondary));
   color: rgb(var(--secondary-foreground));
   border: 1px solid rgb(var(--border));
+  cursor: pointer;
 }
 
 .theme-button-secondary:hover {
@@ -903,6 +905,7 @@ html.light .landing-button-primary {
   background-color: rgb(239 246 255) !important; /* blue-50 - light blue background */
   color: rgb(30 64 175) !important; /* blue-800 - dark blue text */
   border: 2px solid rgb(147 197 253) !important; /* blue-300 border */
+  cursor: pointer;
 }
 
 /* Dark mode: Keep the original design */
@@ -910,6 +913,7 @@ html.dark .landing-button-primary {
   background-color: rgb(var(--landing-primary));
   color: white !important;
   border: none;
+  cursor: pointer;
 }
 
 .landing-button-primary:hover {
@@ -932,6 +936,7 @@ html.dark .landing-button-primary:hover {
   background-color: transparent;
   color: rgb(var(--foreground));
   border: 2px solid rgb(var(--border));
+  cursor: pointer;
 }
 
 .landing-button-secondary:hover {

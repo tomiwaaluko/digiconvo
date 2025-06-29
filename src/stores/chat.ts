@@ -57,6 +57,7 @@ interface ChatState {
   // Actions
   addMessage: (message: Omit<Message, "id" | "timestamp">) => void;
   setCurrentScenario: (scenario: Scenario) => void;
+  clearCurrentScenario: () => void;
   setIsTyping: (typing: boolean) => void;
   setCurrentEmotion: (emotion: EmotionAnalysis) => void;
   toggleSidebar: () => void;
@@ -124,6 +125,16 @@ export const useChatStore = create<ChatState>((set, _get) => ({
 
   setCurrentScenario: (scenario) => {
     set({ currentScenario: scenario });
+  },
+
+  clearCurrentScenario: () => {
+    set({ 
+      currentScenario: null,
+      messages: [], // Clear messages when deselecting scenario
+      currentEmotion: null,
+      emotionHistory: [],
+      isTyping: false 
+    });
   },
 
   setIsTyping: (typing) => {

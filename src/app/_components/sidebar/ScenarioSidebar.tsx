@@ -161,7 +161,7 @@ export function ScenarioSidebar() {
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Scenarios</h2>
                 <button
                   onClick={toggleSidebar}
-                  className="p-1 rounded-md theme-hover theme-text-secondary"
+                  className="p-1 rounded-md theme-hover theme-text-secondary cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -171,7 +171,7 @@ export function ScenarioSidebar() {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedCategory(null)}
-                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  className={`px-3 py-1 rounded-full text-sm transition-colors cursor-pointer ${
                     selectedCategory === null
                       ? 'theme-accent theme-text-accent'
                       : 'theme-secondary theme-text-secondary theme-hover'
@@ -183,7 +183,7 @@ export function ScenarioSidebar() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                    className={`px-3 py-1 rounded-full text-sm transition-colors cursor-pointer ${
                       selectedCategory === category
                         ? 'theme-accent theme-text-accent'
                         : 'theme-secondary theme-text-secondary theme-hover'
@@ -205,7 +205,7 @@ export function ScenarioSidebar() {
                   <motion.button
                     key={scenario.id}
                     onClick={() => handleScenarioSelect(scenario)}
-                    className={`w-full text-left p-4 rounded-lg border transition-all duration-200 ${
+                    className={`w-full text-left p-4 rounded-lg border transition-all duration-200 cursor-pointer ${
                       isSelected
                         ? 'theme-border-accent theme-surface-accent shadow-sm'
                         : 'theme-border theme-hover theme-surface'
@@ -217,7 +217,7 @@ export function ScenarioSidebar() {
                       <div className="flex items-center space-x-2">
                         <IconComponent className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${difficultyColors[scenario.difficulty]}`}>
-                          {scenario.difficulty}
+                          {scenario.difficulty.charAt(0).toUpperCase() + scenario.difficulty.slice(1)}
                         </span>
                       </div>
                       {isSelected && (
