@@ -100,6 +100,21 @@ const mockScenarios: Scenario[] = [
       gender: 'FEMALE',
       voiceName: 'Iapetus',
     }
+  },
+  {
+    id: '7',
+  title: 'Participating in a KnightHacks Hackathon',
+  description: 'You are paricipating in a high stressed hackathon that is extremely difficult but fun',
+  category: 'Professional',
+  difficulty: 'hard',
+  persona: {
+    name: 'Faris',
+    personality: 'Strong willed and determined to win',
+    emotionalTendency: 'Very determined and will do anything to win',
+    gender: 'MALE',
+    voiceName: 'Puck',
+  }
+
   }
 ];
 
