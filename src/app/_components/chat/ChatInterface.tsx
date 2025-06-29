@@ -15,6 +15,7 @@ import {
   composeButton,
   composeInput,
 } from "~/lib/theme-classes";
+import { useSpeechToText } from "~/hooks/useSpeechToText";
 
 import { api } from "~/trpc/react";
 
@@ -22,6 +23,15 @@ export function ChatInterface() {
   const [inputMessage, setInputMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { isListening, transcript, startListening, stopListening } = useSpeechToText();
+
+  useEffect(() => {
+    // When the transcript updates, set it as the input message
+    if (transcript) {
+      setInputMessage(transcript);
+    }
+  }, [transcript]);
 
   const {
     messages,
@@ -127,6 +137,14 @@ export function ChatInterface() {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       void handleSendMessage();
+    }
+  };
+
+  const handleMicButtonClick = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
     }
   };
 
@@ -320,19 +338,19 @@ export function ChatInterface() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={toggleRecording}
-              className={cx(
-                'rounded-lg p-3 h-11 w-11 flex items-center justify-center transition-colors',
-                isRecording
-                  ? "bg-red-500 text-white"
-                  : themeClasses.buttonSecondary,
-              )}
+              onClick={handleMicButtonClick} // Use the new handler
+              className={`rounded-lg p-3 transition-colors ${
+                // The button's style now depends on `isListening`
+                isListening
+                  ? 'bg-red-500 text-white animate-pulse' // Add a pulse animation for feedback
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
               disabled={!currentScenario}
             >
-              {isRecording ? (
-                <Square className="h-5 w-5" />
+              {isListening ? (
+                <Square className="h-5 w-5" /> // Show Square when listening
               ) : (
-                <Mic className="h-5 w-5" />
+                <Mic className="h-5 w-5" /> // Show Mic when not listening
               )}
             </motion.button>
 
