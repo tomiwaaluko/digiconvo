@@ -73,7 +73,9 @@ class AudioPlayerService {
     // Stop any previous audio and clean up its resources before starting anew.
     this.stop();
     
-    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+    const sampleRateMatch = /rate=(\d+)/.exec(mimeType);
+    
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     const sampleRate = sampleRateMatch && sampleRateMatch[1] ? parseInt(sampleRateMatch[1], 10) : 24000;
 
     const pcmData = base64ToPcm(base64Audio);

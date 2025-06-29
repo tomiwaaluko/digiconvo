@@ -105,7 +105,10 @@ export const useChatStore = create<ChatState>((set, _get) => ({
         console.log("Audio finished, setting isSpeaking to false.");
         set({ isSpeaking: false });
       }
-    );
+    ).catch((err) => {
+      console.error("Audio playback failed:", err);
+      set({isSpeaking: false})
+    });
   }
 },
   stopSpeaking: () => {

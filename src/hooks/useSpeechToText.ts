@@ -42,6 +42,7 @@ export function useSpeechToText(): SpeechToTextHook {
         const result = event.results[i];
 
         // 2. Check if the result and its first alternative (result[0]) exist before using them.
+        // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
         if (result && result[0] && result.isFinal) {
           finalTranscript += result[0].transcript;
         }
