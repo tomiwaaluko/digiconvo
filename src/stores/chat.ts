@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { audioPlayer } from "~/lib/audioPlayerService";
 
 export interface Message {
   id: string;
@@ -22,6 +23,8 @@ export interface Scenario {
     name: string;
     personality: string;
     emotionalTendency: string;
+    gender: 'MALE' | 'FEMALE' | 'NEUTRAL';
+    voiceName: string;
   };
 }
 
@@ -39,6 +42,9 @@ interface ChatState {
   currentScenario: Scenario | null;
   isTyping: boolean;
   sessionId: string | null;
+  isSpeechEnabled: boolean;
+  isSpeaking: boolean;
+  
 
   // Emotion analysis
   currentEmotion: EmotionAnalysis | null;
@@ -58,6 +64,9 @@ interface ChatState {
   toggleEmotionPanel: () => void;
   clearChat: () => void;
   startNewSession: () => void;
+  playAiAudio: (audioData: string, mimeType: string) => void; 
+  stopSpeaking: () => void;
+  toggleSpeech: () => void;
 }
 
 export const useChatStore = create<ChatState>((set, _get) => ({
@@ -70,8 +79,39 @@ export const useChatStore = create<ChatState>((set, _get) => ({
   emotionHistory: [],
   sidebarOpen: true,
   showEmotionPanel: true,
+  isSpeechEnabled: true,
+  isSpeaking: false,
 
   // Actions
+  toggleSpeech: () => {
+    // We use get() here to check the current state before updating it
+    if (_get().isSpeechEnabled) {
+      _get().stopSpeaking(); // Stop any current speech if turning off
+    }
+    set((state) => ({ isSpeechEnabled: !state.isSpeechEnabled }));
+  },
+  playAiAudio: (audioData: string, mimeType: string) => {
+  // First, check if the user has speech enabled
+  if (_get().isSpeechEnabled) {
+    // Let the rest of the app know that the AI has started speaking
+    set({ isSpeaking: true });
+
+    // Now, call the play method with ALL THREE required arguments
+    audioPlayer.play(
+      audioData,      // Argument 1: The base64 audio string
+      mimeType,       // Argument 2: The audio format (e.g., 'audio/L16;rate=24000')
+      () => {         // Argument 3: The "onEnd" callback function
+        // This function will be executed automatically when the audio finishes
+        console.log("Audio finished, setting isSpeaking to false.");
+        set({ isSpeaking: false });
+      }
+    );
+  }
+},
+  stopSpeaking: () => {
+    audioPlayer.stop();
+    set({ isSpeaking: false });
+  },
   addMessage: (message) => {
     const newMessage: Message = {
       id: crypto.randomUUID(),

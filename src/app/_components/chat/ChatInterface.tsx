@@ -9,26 +9,16 @@ import { TypingIndicator } from "~/app/_components/chat/TypingIndicator";
 import { WelcomeScreen } from "../welcome/WelcomeScreen";
 import { SessionControls } from "../controls/SessionControls";
 import { ThemeToggle } from "../theme/ThemeToggle";
-import { themeClasses, cx, composeButton, composeInput } from "~/lib/theme-classes";
+import {
+  themeClasses,
+  cx,
+  composeButton,
+  composeInput,
+} from "~/lib/theme-classes";
 
 import { api } from "~/trpc/react";
 
 export function ChatInterface() {
-  // GitHub Copilot Prompt:
-  // On this `/chat` page, I need help with layout alignment and spacing consistency.
-  // 1. At the **bottom of the page**, the text input bar and its buttons (e.g., mic and send) should be **perfectly vertically centered** and aligned horizontally within the same row. Currently, they appear slightly misaligned or uneven.
-  // 2. Ensure there is **consistent padding and margin** between the input field and its surrounding components (like the borders and button containers).
-  // 3. At the **top of the page**, inside the navbar/header, the spacing between the buttons (e.g., theme toggle, profile, analysis toggle) is inconsistent. Please apply **uniform spacing** (like `gap-x-4` or equivalent) between them.
-  // 4. Use Tailwind utility classes (e.g., `flex`, `items-center`, `gap-*`, `justify-between`, `p-*`, `mb-*`, `h-full`, etc.) to fix these issues where appropriate.
-  // The goal is to create clean visual symmetry and even padding/margins between interactive components on both the top and bottom of the chat interface.
-  
-  // FIXES APPLIED:
-  // ✅ Header: Changed from `flex items-center mx-4` to `flex items-center gap-4` for uniform button spacing
-  // ✅ Input Area: Changed from `items-end space-x-4` to `items-center gap-3` for perfect vertical alignment
-  // ✅ Input Area: Reduced padding from `p-6` to `p-4` for better proportion
-  // ✅ Buttons: Added fixed height (`h-11 w-11`) and `flex items-center justify-center` for consistent sizing
-  // ✅ Buttons: Changed from `space-x-2` to `gap-2` for modern gap-based spacing
-  
   const [inputMessage, setInputMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -42,6 +32,7 @@ export function ChatInterface() {
     toggleEmotionPanel,
     showEmotionPanel,
     setCurrentEmotion,
+    playAiAudio,
     clearCurrentScenario,
   } = useChatStore();
 
@@ -67,19 +58,22 @@ export function ChatInterface() {
     onSuccess: (data) => {
       addMessage({
         content: data.reply,
-        sender: 'ai',
+        sender: "ai",
       });
+      if (data.audioContent && data.mimeType) {
+        playAiAudio(data.audioContent, data.mimeType);
+      }
       setIsTyping(false);
     },
     onError: (error) => {
       console.error("AI reply failed:", error);
       addMessage({
         content: "Sorry, I encountered an error. Please try again.",
-        sender: 'ai',
+        sender: "ai",
       });
       setIsTyping(false);
     },
-  })
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -121,10 +115,12 @@ export function ChatInterface() {
     setIsTyping(true);
 
     getReply.mutate({
-      messages: [...currentMessages, {sender: 'user', content: userMessageContent}],
+      messages: [
+        ...currentMessages,
+        { sender: "user", content: userMessageContent },
+      ],
       scenario: currentScenario,
     });
-
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -139,27 +135,62 @@ export function ChatInterface() {
     // TODO: Implement Whisper STT integration
   };
   return (
-    <div className={cx(themeClasses.layout.container, themeClasses.layout.fullHeight, themeClasses.background)}>
+    <div
+      className={cx(
+        themeClasses.layout.container,
+        themeClasses.layout.fullHeight,
+        themeClasses.background,
+      )}
+    >
       {/* Header */}
-      <div className={cx('border-b', themeClasses.backgroundSecondary, themeClasses.spacing.px6, themeClasses.spacing.py4)}>
+      <div
+        className={cx(
+          "border-b",
+          themeClasses.backgroundSecondary,
+          themeClasses.spacing.px6,
+          themeClasses.spacing.py4,
+        )}
+      >
         <div className={themeClasses.layout.spaceBetween}>
           <div>
             {currentScenario ? (
               <div>
-                <h1 className={cx(themeClasses.typography.xl, themeClasses.typography.semibold, themeClasses.textPrimary)}>
+                <h1
+                  className={cx(
+                    themeClasses.typography.xl,
+                    themeClasses.typography.semibold,
+                    themeClasses.textPrimary,
+                  )}
+                >
                   {currentScenario.title}
                 </h1>
-                <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
+                <p
+                  className={cx(
+                    themeClasses.typography.sm,
+                    themeClasses.textSecondary,
+                  )}
+                >
                   Practicing with {currentScenario.persona.name} •{" "}
                   {currentScenario.difficulty.charAt(0).toUpperCase() + currentScenario.difficulty.slice(1)}
                 </p>
               </div>
             ) : (
               <div>
-                <h1 className={cx(themeClasses.typography.xl, themeClasses.typography.semibold, themeClasses.textPrimary)}>
+                <h1
+                  className={cx(
+                    themeClasses.typography.xl,
+                    themeClasses.typography.semibold,
+                    themeClasses.textPrimary,
+                  )}
+                >
                   DigiConvo
                 </h1>
-                <p className={cx(themeClasses.typography.sm, themeClasses.textSecondary)}>
+                <p
+                  className={cx(
+                    themeClasses.typography.sm,
+                    themeClasses.textSecondary,
+                  )}
+                >
                   Choose a scenario to start practicing conversations
                 </p>
               </div>
@@ -189,8 +220,8 @@ export function ChatInterface() {
               className={cx(
                 'rounded-lg px-3 py-2 transition-colors flex items-center justify-center cursor-pointer',
                 showEmotionPanel
-                  ? 'bg-blue-100 text-blue-600'
-                  : themeClasses.buttonSecondary
+                  ? "bg-blue-100 text-blue-600"
+                  : themeClasses.buttonSecondary,
               )}
               title="Toggle Emotion Analysis Panel"
             >
@@ -293,8 +324,8 @@ export function ChatInterface() {
               className={cx(
                 'rounded-lg p-3 h-11 w-11 flex items-center justify-center transition-colors',
                 isRecording
-                  ? 'bg-red-500 text-white'
-                  : themeClasses.buttonSecondary
+                  ? "bg-red-500 text-white"
+                  : themeClasses.buttonSecondary,
               )}
               disabled={!currentScenario}
             >
