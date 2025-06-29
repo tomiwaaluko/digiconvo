@@ -22,7 +22,7 @@ const emotionColors: { [key: string]: string } = {
   Neutral: "#9CA3AF",
 };
 
-const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({});
 
 export const geminiRouter = createTRPCRouter({
   imageAnalyze: publicProcedure
@@ -194,7 +194,7 @@ export const geminiRouter = createTRPCRouter({
 
       try {
         const result = await ai.models.generateContent({
-          model: "gemini-1.5-flash", 
+          model: "gemini-1.5-flash",
           contents: [{ role: "user", parts: [{ text: prompt }] }],
         });
 
