@@ -168,7 +168,7 @@ export const geminiRouter = createTRPCRouter({
             name: z.string(),
             personality: z.string(),
             emotionalTendency: z.string(),
-            gender: z.enum(['MALE', 'FEMALE', 'NEUTRAL']),
+            gender: z.enum(["MALE", "FEMALE", "NEUTRAL"]),
             voiceName: z.string(),
           }),
           description: z.string(),
@@ -198,62 +198,66 @@ export const geminiRouter = createTRPCRouter({
       try {
         const textResult = await ai.models.generateContent({
           model: chatModelName,
-          contents: [{ role: 'user', parts: [{ text: conversationPrompt }] }],
+          contents: [{ role: "user", parts: [{ text: conversationPrompt }] }],
         });
 
-        const replyText = textResult?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const replyText =
+          textResult?.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!replyText) {
           throw new Error("AI failed to generate a text reply.");
         }
 
         const audioGenerationResult = await ai.models.generateContent({
-            model: ttsModelName,
-            // The contents are now just a simple instruction with the text we generated
-            contents: [{
-                parts: [{ text: `[speaker: ${scenario.persona.name}] ${replyText}` }]
-            }],
-            config: {
-                // As the error message dictated, we ONLY request AUDIO
-                responseModalities: ['AUDIO'],
-                speechConfig: {
-                    voiceConfig: {
-                        prebuiltVoiceConfig: { voiceName: scenario.persona.voiceName }
-                    }
-                }
+          model: ttsModelName,
+          // The contents are now just a simple instruction with the text we generated
+          contents: [
+            {
+              parts: [
+                { text: `[speaker: ${scenario.persona.name}] ${replyText}` },
+              ],
             },
+          ],
+          config: {
+            // As the error message dictated, we ONLY request AUDIO
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: scenario.persona.voiceName },
+              },
+            },
+          },
         });
 
         // --- STEP 3: PARSE THE AUDIO-ONLY RESPONSE CORRECTLY ---
         // As per your new code snippet, the data is in `inlineData.data`
-        const audioPart = audioGenerationResult?.candidates?.[0]?.content?.parts?.[0]?.inlineData;
-        const audioContent = audioGenerationResult?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+        const audioPart =
+          audioGenerationResult?.candidates?.[0]?.content?.parts?.[0]
+            ?.inlineData;
+        const audioContent =
+          audioGenerationResult?.candidates?.[0]?.content?.parts?.[0]
+            ?.inlineData?.data;
         const audioMimeType = audioPart?.mimeType;
-        
+
         console.log("DETECTED AUDIO MIME TYPE:", audioMimeType);
 
         if (!audioContent) {
           throw new Error("AI failed to generate audio for the reply.");
         }
-        
+
         // --- STEP 4: RETURN BOTH RESULTS ---
         return {
           reply: replyText,
           audioContent: audioContent,
           mimeType: audioMimeType,
         };
-
-
       } catch (error) {
         console.error("Error in getAiReply two-step process:", error);
         throw new Error("Failed to get a complete response from the AI model.");
-        
       }
-
-      
 
       // try {
       //   const result = await ai.models.generateContent({
-      //     model: "gemini-1.5-flash", 
+      //     model: "gemini-1.5-flash",
       //     contents: [{ role: "user", parts: [{ text: prompt }] }],
       //   });
 
